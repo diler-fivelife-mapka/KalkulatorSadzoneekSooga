@@ -138,15 +138,26 @@ const typeSelect = document.getElementById("type");
 const amountInput = document.getElementById("amount");
 
 typeSelect.addEventListener("change", function() {
-  if (this.value === "amnezja") {
-    amountInput.max = 100;
-    amountInput.placeholder = "Ilość (max 100)";
-  } else if (this.value === "kush") {
-    amountInput.max = 50;
-    amountInput.placeholder = "Ilość (max 50)";
-  } else {
-    amountInput.removeAttribute("max");
-    amountInput.placeholder = "Ilość (brak limitu)";
+  switch(this.value) {
+    case "amnezja":
+      amountInput.max = 100;
+      amountInput.placeholder = "Ilość (max 100)";
+      break;
+    case "kush":
+      amountInput.max = 50;
+      amountInput.placeholder = "Ilość (max 50)";
+      break;
+    case "shaman":
+      amountInput.max = 25;
+      amountInput.placeholder = "Ilość (max 25)";
+      break;
+    case "mimosa":
+      amountInput.max = 30; // załóżmy limit 30 dla Mimosy
+      amountInput.placeholder = "Ilość (max 30)";
+      break;
+    default:
+      amountInput.removeAttribute("max");
+      amountInput.placeholder = "Ilość (brak limitu)";
   }
 });
 
@@ -162,7 +173,10 @@ function calculate() {
   }
 
   // Limity
-  if ((type === "amnezja" && amount > 100) || (type === "kush" && amount > 50)) {
+  if ((type === "amnezja" && amount > 100) || 
+      (type === "kush" && amount > 50) || 
+      (type === "shaman" && amount > 25) ||
+      (type === "mimosa" && amount > 30)) {
     resultDiv.innerHTML = "❌ Przekroczono limit sadzonek!";
     return;
   }
@@ -171,6 +185,7 @@ function calculate() {
   let fertilizer = "";
   let yieldMin = 0;
   let points = 0;
+  let plantingType = "Gruntowe sadzenie";
 
   if (type === "amnezja") {
     water = `${amount * 5} x 1L <small>(jedna daje 50%)</small>`;
@@ -182,13 +197,25 @@ function calculate() {
     fertilizer = `${amount * 4} x 0.3L <small>(jedna daje 30%)</small><br>${amount * 2} x 0.6L <small>(jedna daje 60%)</small>`;
     yieldMin = amount * 72;
     points = amount * 2;
+  } else if (type === "shaman") {
+    water = `${amount * 21} x 1L <small>(jedna daje 13%)</small><br>${amount * 20} x 1L (dla odważnych)<br>${amount * 10} x 2L<br>${amount * 4} x 5L`;
+    fertilizer = `${amount * 8} x 0.3L <small>(jedna daje 20%)</small>`;
+    yieldMin = amount * 130;
+    points = amount * 4;
+    plantingType += " (Ryzyko zachorowania!)";
+  } else if (type === "mimosa") {
+    water = `${amount * 12} x 1L <small>(jedna daje 40%)</small>`;
+    fertilizer = `${amount * 3} x 0.3L <small>(jedna daje 50%)</small>`;
+    yieldMin = amount * 90;
+    points = amount * 3;
   }
 
   resultDiv.innerHTML = `
-    🌱 <b>${amount}</b> sadzonek<br><br>
+    🌱 <b>${amount}</b> sadzonek<br>
+    <small>${plantingType}</small><br><br>
     🥤 Woda:<br>${water}<br><br>
     ⛱️ Nawóz:<br>${fertilizer}<br><br>
-    ⏰ Czas: <b>2 godziny</b><br>
+    ⏰ Czas: <b>${type === "shaman" ? "1 godzina" : "2 godziny"}</b><br>
     🌿 Plony: <b>~${yieldMin}</b><br>
     🔹 Punkty upraw: <b>${points}</b>
   `;
