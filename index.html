@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Kalkulator sadzonek</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #4a4a4a;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+    }
+
+    .container {
+      margin-top: 40px;
+      background: #2f2f2f;
+      padding: 25px 30px;
+      border-radius: 10px;
+      width: 500px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    select, input, button {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    select, input {
+      background: #1f1f1f;
+      color: white;
+    }
+
+    button {
+      background: #3b82f6;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    .result {
+      margin-top: 10px;
+      font-size: 16px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Kalkulator sadzonek (1.0)</h1>
+
+  <label for="type">Rodzaj odmiany:</label>
+  <select id="type">
+    <option value="">-- Wybierz odmianę --</option>
+    <option value="small">Mała</option>
+    <option value="medium">Średnia</option>
+    <option value="large">Duża</option>
+  </select>
+
+  <label for="amount">Ilość roślin:</label>
+  <input type="number" id="amount" placeholder="Podaj ilość">
+
+  <button onclick="calculate()">Oblicz</button>
+
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+function calculate() {
+  const type = document.getElementById("type").value;
+  const amount = parseInt(document.getElementById("amount").value);
+
+  if (!type || !amount) {
+    document.getElementById("result").innerText = "Uzupełnij wszystkie pola!";
+    return;
+  }
+
+  let multiplier = 1;
+
+  if (type === "small") multiplier = 1;
+  if (type === "medium") multiplier = 1.5;
+  if (type === "large") multiplier = 2;
+
+  const result = amount * multiplier;
+
+  document.getElementById("result").innerText =
+    "Wynik: " + result + " jednostek";
+}
+</script>
+
+</body>
+</html>
