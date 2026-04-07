@@ -176,7 +176,7 @@ function calculate() {
   if ((type === "amnezja" && amount > 100) || 
       (type === "kush" && amount > 50) || 
       (type === "shaman" && amount > 25) ||
-      (type === "mimosa" && amount > 30)) {
+      (type === "mimosa" && amount > 12)) {
     resultDiv.innerHTML = "❌ Przekroczono limit sadzonek!";
     return;
   }
@@ -198,7 +198,9 @@ function calculate() {
     yieldMin = amount * 72;
     points = amount * 2;
   } else if (type === "shaman") {
-    water = `20 x 1L <small>(jedna daje 12%)</small><br>10 x 2L (.soon)<br>4 x 5L (.soon)`;
+    water = `${amount * 20} x 1L <small>(jedna daje 12%)</small><br>` +
+            `${amount * 10} x 2L (.soon)<br>` +
+            `${amount * 4} x 5L (.soon)`;
     fertilizer = `${amount * 8} x 0.3L <small>(jedna daje 20%)</small>`;
     yieldMin = amount * 130;
     points = amount * 4;
