@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Kalkulator sadzonek</title>
-
 <style>
 :root {
   --bg: linear-gradient(135deg, #1f2937, #111827);
@@ -12,7 +11,6 @@
   --input: rgba(0,0,0,0.4);
   --border: rgba(255,255,255,0.1);
 }
-
 .light {
   --bg: linear-gradient(135deg, #e5e7eb, #f9fafb);
   --card: rgba(255,255,255,0.8);
@@ -20,88 +18,20 @@
   --input: rgba(255,255,255,0.9);
   --border: rgba(0,0,0,0.1);
 }
-
-* {
-  box-sizing: border-box;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: var(--bg);
-  color: var(--text);
-  transition: 0.3s;
-}
-
-.container {
-  width: 520px;
-  padding: 30px;
-  border-radius: 16px;
-  background: var(--card);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-  border: 1px solid var(--border);
-}
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  cursor: pointer;
-  font-size: 18px;
-}
-
-select, input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: var(--input);
-  color: var(--text);
-  margin-bottom: 15px;
-}
-
-button {
-  width: 100%;
-  padding: 13px;
-  border: none;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-  cursor: pointer;
-}
-
-.result {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 10px;
-  background: var(--input);
-  text-align: center;
-}
-
-.footer {
-  text-align: center;
-  margin-top: 10px;
-  font-size: 12px;
-  opacity: 0.7;
-}
+* { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+body { margin:0;height:100vh;display:flex;justify-content:center;align-items:center;background:var(--bg);color:var(--text);transition:0.3s; }
+.container { width:520px;padding:30px;border-radius:16px;background:var(--card);backdrop-filter:blur(12px);box-shadow:0 10px 40px rgba(0,0,0,0.4);border:1px solid var(--border); }
+h1 { text-align:center;margin-bottom:20px; }
+.toggle { position:absolute;top:20px;right:20px;cursor:pointer;font-size:18px; }
+select,input { width:100%;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--input);color:var(--text);margin-bottom:15px; }
+button { width:100%;padding:13px;border:none;border-radius:10px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:white;cursor:pointer; }
+.result { margin-top:20px;padding:15px;border-radius:10px;background:var(--input);text-align:center; }
+.footer { text-align:center;margin-top:10px;font-size:12px;opacity:0.7; }
 </style>
 </head>
-
 <body>
-
 <div class="container">
   <div class="toggle" onclick="toggleTheme()">🌙</div>
-
   <h1>🌱 Kalkulator sadzonek 🌱</h1>
 
   <select id="type">
@@ -124,146 +54,96 @@ button {
   </select>
 
   <select id="sellType">
-    <option value="dealer">💰 Dealer (1750$)</option>
-    <option value="hidden">🕵️ Ukryty diler (2100$)</option>
+    <option value="dealer">💰 Dealer</option>
+    <option value="hidden">🕵️ Ukryty diler</option>
     <option value="player">👤 Sprzedaż graczowi</option>
   </select>
 
   <input type="number" id="price" placeholder="Cena dla gracza (np. 900)">
 
   <button onclick="calculate()">Oblicz</button>
-
   <div class="result" id="result"></div>
-
   <div class="footer">By Sooga</div>
 </div>
 
 <script>
-// 🌗 THEME
 function toggleTheme() {
   document.body.classList.toggle("light");
-  localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
+  localStorage.setItem("theme",document.body.classList.contains("light")?"light":"dark");
 }
-if (localStorage.getItem("theme") === "light") {
-  document.body.classList.add("light");
-}
+if(localStorage.getItem("theme")==="light"){document.body.classList.add("light");}
 
-// 🔥 LIMIT zależny od odmiany
-const typeSelect = document.getElementById("type");
-const amountInput = document.getElementById("amount");
+const typeSelect=document.getElementById("type");
+const amountInput=document.getElementById("amount");
 
-typeSelect.addEventListener("change", function() {
-  switch(this.value) {
-    case "amnezja":
-      amountInput.max = 100;
-      amountInput.placeholder = "Ilość (max 100)";
-      break;
-    case "kush":
-      amountInput.max = 50;
-      amountInput.placeholder = "Ilość (max 50)";
-      break;
-    case "shaman":
-      amountInput.max = 25;
-      amountInput.placeholder = "Ilość (max 25)";
-      break;
-    case "mimosa":
-      amountInput.max = 12; 
-      amountInput.placeholder = "Ilość (max 12)";
-      break;
-    default:
-      amountInput.removeAttribute("max");
-      amountInput.placeholder = "Ilość sadzonek";
+typeSelect.addEventListener("change",function(){
+  switch(this.value){
+    case "amnezja": amountInput.max=100;amountInput.placeholder="Ilość (max 100)";break;
+    case "kush": amountInput.max=50;amountInput.placeholder="Ilość (max 50)";break;
+    case "shaman": amountInput.max=25;amountInput.placeholder="Ilość (max 25)";break;
+    case "mimosa": amountInput.max=12;amountInput.placeholder="Ilość (max 12)";break;
+    default: amountInput.removeAttribute("max");amountInput.placeholder="Ilość sadzonek";
   }
 });
 
-// 📊 kalkulator
-function calculate() {
-  const vehicleCapacity = parseInt(document.getElementById("vehicle").value);
-  const sellType = document.getElementById("sellType").value;
-  const price = parseFloat(document.getElementById("price").value);
-  const type = typeSelect.value;
-  const amount = parseInt(amountInput.value);
-  const resultDiv = document.getElementById("result");
+function calculate(){
+  const vehicleCapacity=parseInt(document.getElementById("vehicle").value);
+  const sellType=document.getElementById("sellType").value;
+  const price=parseFloat(document.getElementById("price").value);
+  const type=typeSelect.value;
+  const amount=parseInt(amountInput.value);
+  const resultDiv=document.getElementById("result");
 
-  if (!type || !amount || amount <= 0) {
-    resultDiv.innerHTML = "⚠️ Uzupełnij wszystkie pola!";
-    return;
+  if(!type||!amount||amount<=0){resultDiv.innerHTML="⚠️ Uzupełnij wszystkie pola!";return;}
+  if((type==="amnezja"&&amount>100)||(type==="kush"&&amount>50)||(type==="shaman"&&amount>25)||(type==="mimosa"&&amount>12)){
+    resultDiv.innerHTML="❌ Przekroczono limit sadzonek!";return;
   }
 
-  // Limity
-  if ((type === "amnezja" && amount > 100) || 
-      (type === "kush" && amount > 50) || 
-      (type === "shaman" && amount > 25) ||
-      (type === "mimosa" && amount > 12)) {
-    resultDiv.innerHTML = "❌ Przekroczono limit sadzonek!";
-    return;
-  }
-
-  let data = {
-    amnezja: {water:5,fertilizer:2,yield:36,exp:20,points:1,grindLvl:1,potLvl:2,time:120},
-    kush: {water1:10,water2:5,fertilizer1:4,fertilizer2:2,yield:72,exp:50,points:2,grindLvl:3,potLvl:4,time:120},
-    shaman: {water1:21,water2:10,water5:4,fertilizer:8,yield:132,exp:100,points:4,grindLvl:5,potLvl:6,time:60},
-    mimosa: {water:12,fertilizer:3,yield:360,exp:200,points:8,grindLvl:7,potLvl:8,time:180}
+  // DANE O ODMIANACH
+  const data={
+    amnezja:{wet:40,dry:20,water:5,fertilizer:2,grindLvl:1,potLvl:2,points:1,time:120},
+    kush:{wet:72,dry:36,water:10,water2:5,fertilizer:4,fertilizer2:2,grindLvl:3,potLvl:4,points:2,time:120},
+    shaman:{wet:132,dry:66,water:21,water2:10,water5:4,fertilizer:8,grindLvl:5,potLvl:6,points:4,time:60},
+    mimosa:{wet:360,dry:180,water:12,fertilizer:3,grindLvl:7,potLvl:8,points:8,time:180}
   };
 
   // Woda i nawóz
-  let waterText = "";
-  let fertilizerText = "";
-  if(type==="amnezja"){
-    waterText = `${amount*data[type].water} x 1L <small>(jedna daje 50%)</small>`;
-    fertilizerText = `${amount*data[type].fertilizer} x 0.3L <small>(jedna daje 60%)</small>`;
-  } else if(type==="kush"){
-    waterText = `${amount*data[type].water1} x 1L <small>(25%)</small><br>${amount*data[type].water2} x 2L <small>(50%)</small>`;
-    fertilizerText = `${amount*data[type].fertilizer1} x 0.3L <small>(30%)</small><br>${amount*data[type].fertilizer2} x 0.6L <small>(60%)</small>`;
-  } else if(type==="shaman"){
-    waterText = `${amount*data[type].water1} x 1L <small>(13%)</small><br>${amount*data[type].water2} x 2L (.soon)<br>${amount*data[type].water5} x 5L (.soon)`;
-    fertilizerText = `${amount*data[type].fertilizer} x 0.3L <small>(20%)</small>`;
-  } else if(type==="mimosa"){
-    waterText = `${amount*data[type].water} x 1L <small>(40%)</small>`;
-    fertilizerText = `${amount*data[type].fertilizer} x 0.3L <small>(50%)</small>`;
-  }
+  let waterText="",fertilizerText="";
+  if(type==="amnezja"){waterText=`${amount*data[type].water} x 1L`; fertilizerText=`${amount*data[type].fertilizer} x 0.3L`;}
+  else if(type==="kush"){waterText=`${amount*data[type].water} x 1L<br>${amount*data[type].water2} x 2L`; fertilizerText=`${amount*data[type].fertilizer} x 0.3L<br>${amount*data[type].fertilizer2} x 0.6L`;}
+  else if(type==="shaman"){waterText=`${amount*data[type].water} x1L<br>${amount*data[type].water2}x2L<br>${amount*data[type].water5}x5L`; fertilizerText=`${amount*data[type].fertilizer}x0.3L`;}
+  else if(type==="mimosa"){waterText=`${amount*data[type].water} x 1L`; fertilizerText=`${amount*data[type].fertilizer} x0.3L`; }
 
-  // Plony i punkty
-  let wet = 0, dry = 0;
-  if(type==="amnezja") {wet=amount*40; dry=amount*20;}
-  else if(type==="kush") {wet=amount*72; dry=amount*36;}
-  else if(type==="shaman") {wet=amount*132; dry=amount*66;}
-  else if(type==="mimosa") {wet=amount*360; dry=amount*180;}
+  // Plony
+  let wet=data[type].wet*amount;
+  let dry=data[type].dry*amount;
 
-  let wetWeight = wet/12; // przykładowa waga 1 mokrego=0.083 kg
-  let dryWeight = dry/12; // 1 suche=0.083 kg
+  // Waga: przyjmujemy 1kg mokrego=0.5kg suchego
+  let wetWeight=wet*0.09; 
+  let dryWeight=dry*0.09;
 
-  let tripsWet = Math.ceil(wetWeight/vehicleCapacity);
-  let tripsDry = Math.ceil(dryWeight/vehicleCapacity);
+  let tripsWet=Math.ceil(wetWeight/vehicleCapacity);
+  let tripsDry=Math.ceil(dryWeight/vehicleCapacity);
 
-  // Koszty
-  let waterCost = type==="amnezja"?amount*5*10 : type==="kush"?(amount*10*10 + amount*5*20):0;
-  let fertilizerCost = type==="amnezja"?amount*2*50: type==="kush"?(amount*4*50+amount*2*100):0;
-  let totalCost = waterCost + fertilizerCost;
+  // Koszty (prosto: woda 10$, nawóz 50$)
+  let waterCost=amount*data[type].water*10;
+  let fertilizerCost=amount*data[type].fertilizer*50;
+  let totalCost=waterCost+fertilizerCost;
 
-  // Liczba działek
-  let unit = 20;
-  let units = Math.ceil(dry/unit);
+  // Działki
+  let units=Math.ceil(dry/20);
 
   // Sprzedaż
-  let dealerPrice = 1750;
-  let hiddenPrice = 2100;
-  if(type==="amnezja") {dealerPrice=1750; hiddenPrice=1850;}
-  if(type==="kush") {dealerPrice=1750; hiddenPrice=1850;}
-  if(type==="shaman") {dealerPrice=1750; hiddenPrice=1850;}
-  if(type==="mimosa") {dealerPrice=1750; hiddenPrice=1850;}
+  let income=0; let label="";
+  let dealer=1750, hidden1=1850, hidden2=2100, hidden3=2220, hidden4=2520;
+  if(sellType==="dealer"){income=units*dealer; label=`Dealer (${dealer}$)`;}
+  else if(sellType==="hidden"){income=units*hidden1; label=`Ukryty diler (${hidden1}$)`;}
+  else if(sellType==="player"){income=price?units*price:0; label="Sprzedaż graczowi";}
 
-  let income = 0;
-  let label = "";
-  if(sellType==="dealer"){income=units*dealerPrice; label=`Dealer (${dealerPrice}$)`;}
-  else if(sellType==="hidden"){income=units*hiddenPrice; label=`Ukryty diler (${hiddenPrice}$)`;}
-  else if(sellType==="player"){income=price?units*price:0; label=`Sprzedaż graczowi`;}
+  let profit=income-totalCost;
 
-  let profit = income - totalCost;
-
-  resultDiv.innerHTML = `
+  resultDiv.innerHTML=`
     🌱 <b>${amount}</b> sadzonek<br>
-    <small>Gruntowe sadzenie</small><br><br>
     🎗️ Poziomy umiejętności:<br>
     gruntowe: ${data[type].grindLvl} lvl<br>
     doniczkowe: ${data[type].potLvl} lvl<br><br>
@@ -289,6 +169,5 @@ function calculate() {
   `;
 }
 </script>
-
 </body>
 </html>
