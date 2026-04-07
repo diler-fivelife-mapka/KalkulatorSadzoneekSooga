@@ -22,6 +22,7 @@
       width: 500px;
       box-shadow: 0 5px 20px rgba(0,0,0,0.3);
       color: white;
+      position: relative;
     }
 
     h1 {
@@ -64,6 +65,13 @@
       font-size: 16px;
       text-align: center;
     }
+
+    .footer {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #aaa;
+    }
   </style>
 </head>
 <body>
@@ -74,9 +82,10 @@
   <label for="type">Rodzaj odmiany:</label>
   <select id="type">
     <option value="">-- Wybierz odmianę --</option>
-    <option value="small">Mała</option>
-    <option value="medium">Średnia</option>
-    <option value="large">Duża</option>
+    <option value="amnezja">Amnezja</option>
+    <option value="kush">Kush</option>
+    <option value="shaman">Shaman</option>
+    <option value="mimosa">Mimosa</option>
   </select>
 
   <label for="amount">Ilość roślin:</label>
@@ -85,6 +94,8 @@
   <button onclick="calculate()">Oblicz</button>
 
   <div class="result" id="result"></div>
+
+  <div class="footer">By Sooga</div>
 </div>
 
 <script>
@@ -99,14 +110,25 @@ function calculate() {
 
   let multiplier = 1;
 
-  if (type === "small") multiplier = 1;
-  if (type === "medium") multiplier = 1.5;
-  if (type === "large") multiplier = 2;
+  switch(type) {
+    case "amnezja":
+      multiplier = 1.2;
+      break;
+    case "kush":
+      multiplier = 1.5;
+      break;
+    case "shaman":
+      multiplier = 1.1;
+      break;
+    case "mimosa":
+      multiplier = 1.8;
+      break;
+  }
 
   const result = amount * multiplier;
 
   document.getElementById("result").innerText =
-    "Wynik: " + result + " jednostek";
+    "Wynik: " + result.toFixed(2);
 }
 </script>
 
