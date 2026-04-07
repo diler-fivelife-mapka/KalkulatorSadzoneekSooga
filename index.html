@@ -198,13 +198,13 @@ function calculate() {
     yieldMin = amount * 72;
     points = amount * 2;
   } else if (type === "shaman") {
-    water = `${amount * 20} x 1L <small>(jedna daje 12%)</small><br>` +
+    water = `${amount * 21} x 1L <small>(jedna daje 13%)</small><br>` +
             `${amount * 10} x 2L (.soon)<br>` +
             `${amount * 4} x 5L (.soon)`;
     fertilizer = `${amount * 8} x 0.3L <small>(jedna daje 20%)</small>`;
     yieldMin = amount * 130;
     points = amount * 4;
-    plantingType += " (Ryzyko zachorowania!)";
+    plantingType = "Gruntowe sadzenie <span style='color:red;'>(Ryzyko zachorowania!)</span>";
   } else if (type === "mimosa") {
     water = `${amount * 12} x 1L <small>(jedna daje 40%)</small>`;
     fertilizer = `${amount * 3} x 0.3L <small>(jedna daje 50%)</small>`;
