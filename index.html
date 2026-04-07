@@ -125,9 +125,7 @@ button {
 // 🌗 THEME
 function toggleTheme() {
   document.body.classList.toggle("light");
-
-  const isLight = document.body.classList.contains("light");
-  localStorage.setItem("theme", isLight ? "light" : "dark");
+  localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
 }
 
 // zapamiętywanie
@@ -135,10 +133,27 @@ if (localStorage.getItem("theme") === "light") {
   document.body.classList.add("light");
 }
 
+// 🔥 LIMIT zależny od odmiany
+const typeSelect = document.getElementById("type");
+const amountInput = document.getElementById("amount");
+
+typeSelect.addEventListener("change", function() {
+  if (this.value === "amnezja") {
+    amountInput.max = 100;
+    amountInput.placeholder = "Ilość (max 100)";
+  } else if (this.value === "kush") {
+    amountInput.max = 50;
+    amountInput.placeholder = "Ilość (max 50)";
+  } else {
+    amountInput.removeAttribute("max");
+    amountInput.placeholder = "Ilość (brak limitu)";
+  }
+});
+
 // 📊 kalkulator
 function calculate() {
-  const type = document.getElementById("type").value;
-  const amount = parseInt(document.getElementById("amount").value);
+  const type = typeSelect.value;
+  const amount = parseInt(amountInput.value);
   const resultDiv = document.getElementById("result");
 
   if (!type || !amount) {
@@ -146,24 +161,40 @@ function calculate() {
     return;
   }
 
-  if (type === "amnezja" && amount > 100) {
-    resultDiv.innerHTML = "❌ Maksymalnie 100 sadzonek!";
+  // Limity
+  if ((type === "amnezja" && amount > 100) || (type === "kush" && amount > 50)) {
+    resultDiv.innerHTML = "❌ Przekroczono limit sadzonek!";
     return;
   }
 
-  let water = amount * 5;
-  let fertilizer = amount * 2;
-  let yieldMin = amount * 36;
+  let water = "";
+  let fertilizer = "";
+  let yieldMin = 0;
+  let skill = 0;
+  let points = 0;
+
+  if (type === "amnezja") {
+    water = `${amount * 5} x 1L (50%)`;
+    fertilizer = `${amount * 2} x 0.3L`;
+    yieldMin = amount * 36;
+    skill = amount * 1;
+    points = amount * 1; // 1 punkt upraw na sadzonkę
+  } else if (type === "kush") {
+    water = `${amount * 10} x 1L (25%) lub ${amount * 5} x 2L (50%)`;
+    fertilizer = `${amount * 4} x 0.3L (30%) lub ${amount * 2} x 0.6L (60%)`;
+    yieldMin = amount * 72;
+    skill = amount * 2;
+    points = amount * 2; // 2 punkty upraw na sadzonkę
+  }
 
   resultDiv.innerHTML = `
     🌱 <b>${amount}</b> sadzonek<br><br>
-    🥤 Woda: <b>${water}</b> L<br>
+    🥤 Woda: <b>${water}</b><br>
     ⛱️ Nawóz: <b>${fertilizer}</b><br><br>
     ⏰ Czas: <b>2 godziny</b><br>
-    🌿 Plony: <b>~${yieldMin}</b>
+    🌿 Plony: <b>~${yieldMin}</b><br>
+    ⭐ Punkty umiejętności: <b>+${skill}</b><br>
+    🔹 Punkty upraw: <b>${points}</b>
   `;
 }
 </script>
-
-</body>
-</html>
