@@ -114,6 +114,22 @@ button {
 
   <input type="number" id="amount" placeholder="Ilość (max 100)" max="100">
 
+  <select id="vehicle">
+  <option value="30">🚗 Surfer (30kg)</option>
+  <option value="35">🚐 Moonbeam (35kg)</option>
+  <option value="35">🚐 Slamvan (35kg)</option>
+  <option value="45">🚙 Guardian (45kg)</option>
+  <option value="45">🚙 Sandking (45kg)</option>
+  <option value="90">🚁 Volatus (90kg)</option>
+</select>
+
+<select id="sellType">
+  <option value="dealer">💰 Dealer (1750$)</option>
+  <option value="hidden">🕵️ Ukryty diler (2100$)</option>
+  <option value="player">👤 Sprzedaż graczowi</option>
+</select>
+
+<input type="number" id="price" placeholder="Cena dla gracza (np. 900)">
   <button onclick="calculate()">Oblicz</button>
 
   <div class="result" id="result"></div>
@@ -163,6 +179,9 @@ typeSelect.addEventListener("change", function() {
 
 // 📊 kalkulator
 function calculate() {
+  const vehicleCapacity = parseInt(document.getElementById("vehicle").value);
+  const sellType = document.getElementById("sellType").value;
+  const price = parseFloat(document.getElementById("price").value);
   const type = typeSelect.value;
   const amount = parseInt(amountInput.value);
   const resultDiv = document.getElementById("result");
@@ -194,6 +213,43 @@ if (type === "amnezja") {
     fertilizer = `${amount * 2} x 0.3L <small>(jedna daje 60%)</small>`;
     yieldMin = amount * 36;
     points = amount * 1;
+  // 🌿 plony
+let wet = amount * 40;
+let dry = amount * 20;
+
+// ⚖️ waga
+let wetWeight = amount * 3;
+let dryWeight = amount * 1.5;
+
+// 🚗 transport
+let tripsWet = Math.ceil(wetWeight / vehicleCapacity);
+let tripsDry = Math.ceil(dryWeight / vehicleCapacity);
+
+// 💸 koszty
+let waterCost = (amount * 5) * 10;
+let fertilizerCost = (amount * 2) * 50;
+let totalCost = waterCost + fertilizerCost;
+
+// 💰 sprzedaż
+let income = 0;
+let label = "";
+
+if (sellType === "dealer") {
+  income = dry * 1750;
+  label = "Dealer (1750$)";
+}
+else if (sellType === "hidden") {
+  income = dry * 2100;
+  label = "Ukryty diler (2100$)";
+}
+else if (sellType === "player") {
+  income = price ? dry * price : 0;
+  label = "Gracz";
+}
+
+  // 🔥 profit
+let profit = income - totalCost;
+  
 } else if (type === "kush") {
     skillLevels = "🎗️ Poziomy umiejętności:<br>gruntowe: 3 lvl<br>doniczkowe: 4 lvl";
     water = `${amount * 10} x 1L <small>(jedna daje 25%)</small><br>${amount * 5} x 2L <small>(jedna daje 50%)</small>`;
@@ -224,6 +280,29 @@ resultDiv.innerHTML = `
     ⏰ Czas: <b>${type === "shaman" ? "1 godzina" : "2 godziny"}</b><br>
     🌿 Plony: <b>~${yieldMin}</b><br>
     🔹 Punkty upraw: <b>${points}</b>
+    <br><br>
+
+🌿 Mokre: <b>${wet}</b><br>
+🌿 Suche: <b>${dry}</b><br><br>
+
+⚖️ Waga mokre: <b>${wetWeight} kg</b><br>
+⚖️ Waga suche: <b>${dryWeight} kg</b><br><br>
+
+🚗 Transport:<br>
+Mokre: <b>${tripsWet}</b> kursów<br>
+Suche: <b>${tripsDry}</b> kursów<br><br>
+
+💰 Sprzedaż:<br>
+Tryb: <b>${label}</b><br>
+Przychód: <b>${income}$</b><br><br>
+
+💸 Koszty:<br>
+Woda: <b>${waterCost}$</b><br>
+Nawóz: <b>${fertilizerCost}$</b><br>
+Razem: <b>${totalCost}$</b><br><br>
+
+🔥 Zysk na czysto:<br>
+<b style="color:${profit >= 0 ? 'lime' : 'red'}">${profit}$</b>
   `;
 }
 </script>
