@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Kalkulator sadzonek</title>
+
 <style>
 :root {
   --bg: linear-gradient(135deg, #1f2937, #111827);
@@ -11,6 +12,7 @@
   --input: rgba(0,0,0,0.4);
   --border: rgba(255,255,255,0.1);
 }
+
 .light {
   --bg: linear-gradient(135deg, #e5e7eb, #f9fafb);
   --card: rgba(255,255,255,0.8);
@@ -18,21 +20,88 @@
   --input: rgba(255,255,255,0.9);
   --border: rgba(0,0,0,0.1);
 }
-* { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-body { margin: 0; height: 100vh; display: flex; justify-content: center; align-items: center; background: var(--bg); color: var(--text); transition: 0.3s; }
-.container { width: 480px; padding: 30px; border-radius: 16px; background: var(--card); backdrop-filter: blur(12px); box-shadow: 0 10px 40px rgba(0,0,0,0.4); border: 1px solid var(--border); }
-h1 { text-align: center; margin-bottom: 20px; }
-.toggle { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 18px; }
-select, input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--input); color: var(--text); margin-bottom: 15px; }
-button { width: 100%; padding: 13px; border: none; border-radius: 10px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; cursor: pointer; }
-.result { margin-top: 20px; padding: 15px; border-radius: 10px; background: var(--input); text-align: center; }
-.footer { text-align: center; margin-top: 10px; font-size: 12px; opacity: 0.7; }
+
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+}
+
+.container {
+  width: 520px;
+  padding: 30px;
+  border-radius: 16px;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  border: 1px solid var(--border);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+select, input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--input);
+  color: var(--text);
+  margin-bottom: 15px;
+}
+
+button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background: var(--input);
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.7;
+}
 </style>
 </head>
+
 <body>
 
 <div class="container">
   <div class="toggle" onclick="toggleTheme()">🌙</div>
+
   <h1>🌱 Kalkulator sadzonek 🌱</h1>
 
   <select id="type">
@@ -43,7 +112,7 @@ button { width: 100%; padding: 13px; border: none; border-radius: 10px; backgrou
     <option value="mimosa">Mimosa</option>
   </select>
 
-  <input type="number" id="amount" placeholder="Ilość (max 100)" max="100">
+  <input type="number" id="amount" placeholder="Ilość sadzonek">
 
   <select id="vehicle">
     <option value="30">🚗 Surfer (30kg)</option>
@@ -61,8 +130,11 @@ button { width: 100%; padding: 13px; border: none; border-radius: 10px; backgrou
   </select>
 
   <input type="number" id="price" placeholder="Cena dla gracza (np. 900)">
+
   <button onclick="calculate()">Oblicz</button>
+
   <div class="result" id="result"></div>
+
   <div class="footer">By Sooga</div>
 </div>
 
@@ -72,106 +144,151 @@ function toggleTheme() {
   document.body.classList.toggle("light");
   localStorage.setItem("theme", document.body.classList.contains("light") ? "light" : "dark");
 }
-if(localStorage.getItem("theme")==="light"){document.body.classList.add("light");}
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light");
+}
 
 // 🔥 LIMIT zależny od odmiany
 const typeSelect = document.getElementById("type");
 const amountInput = document.getElementById("amount");
+
 typeSelect.addEventListener("change", function() {
-  switch(this.value){
-    case "amnezja": amountInput.max=100; amountInput.placeholder="Ilość (max 100)"; break;
-    case "kush": amountInput.max=50; amountInput.placeholder="Ilość (max 50)"; break;
-    case "shaman": amountInput.max=25; amountInput.placeholder="Ilość (max 25)"; break;
-    case "mimosa": amountInput.max=12; amountInput.placeholder="Ilość (max 12)"; break;
-    default: amountInput.removeAttribute("max"); amountInput.placeholder="Ilość (brak limitu)";
+  switch(this.value) {
+    case "amnezja":
+      amountInput.max = 100;
+      amountInput.placeholder = "Ilość (max 100)";
+      break;
+    case "kush":
+      amountInput.max = 50;
+      amountInput.placeholder = "Ilość (max 50)";
+      break;
+    case "shaman":
+      amountInput.max = 25;
+      amountInput.placeholder = "Ilość (max 25)";
+      break;
+    case "mimosa":
+      amountInput.max = 12; 
+      amountInput.placeholder = "Ilość (max 12)";
+      break;
+    default:
+      amountInput.removeAttribute("max");
+      amountInput.placeholder = "Ilość sadzonek";
   }
 });
 
-// 📊 KALKULATOR
-function calculate(){
-  const type = typeSelect.value;
-  const amount = parseInt(amountInput.value);
-  const vehicle = parseInt(document.getElementById("vehicle").value);
+// 📊 kalkulator
+function calculate() {
+  const vehicleCapacity = parseInt(document.getElementById("vehicle").value);
   const sellType = document.getElementById("sellType").value;
   const price = parseFloat(document.getElementById("price").value);
+  const type = typeSelect.value;
+  const amount = parseInt(amountInput.value);
   const resultDiv = document.getElementById("result");
-  if(!type||!amount){ resultDiv.innerHTML="⚠️ Uzupełnij wszystkie pola!"; return; }
 
-  if( (type==="amnezja" && amount>100) ||
-      (type==="kush" && amount>50) ||
-      (type==="shaman" && amount>25) ||
-      (type==="mimosa" && amount>12) ){
-    resultDiv.innerHTML="❌ Przekroczono limit sadzonek!"; return;
+  if (!type || !amount || amount <= 0) {
+    resultDiv.innerHTML = "⚠️ Uzupełnij wszystkie pola!";
+    return;
   }
 
-  // ✅ GLOBALNE ZMIENNE
-  let wet=0,dry=0,wetWeight=0,dryWeight=0;
-  let waterCost=0,fertilizerCost=0,totalCost=0;
-  let income=0,profit=0,label="";
-  let plantingType="Gruntowe sadzenie",skillLevels="",yieldMin=0,points=0,time="2 godziny";
-
-  // 💚 DANE ODMIAN
-  switch(type){
-    case "amnezja":
-      skillLevels="🎗️ Poziomy umiejętności:<br>gruntowe: 1 lvl<br>doniczkowe: 2 lvl";
-      wet=amount*40; dry=amount*20; wetWeight=amount*3; dryWeight=amount*1.5;
-      waterCost=amount*5*10; fertilizerCost=amount*2*50;
-      yieldMin=amount*36; points=amount*1; time="2 godziny";
-      break;
-    case "kush":
-      skillLevels="🎗️ Poziomy umiejętności:<br>gruntowe: 3 lvl<br>doniczkowe: 4 lvl";
-      wet=amount*72; dry=amount*36; wetWeight=amount*7.2; dryWeight=amount*3.6;
-      waterCost=amount*10*10; fertilizerCost=amount*4*50;
-      yieldMin=amount*72; points=amount*2; time="2 godziny";
-      break;
-    case "shaman":
-      skillLevels="🎗️ Poziomy umiejętności:<br>gruntowe: 5 lvl<br>doniczkowe: 6 lvl";
-      wet=amount*132; dry=amount*66; wetWeight=amount*13.2; dryWeight=amount*6.6;
-      waterCost=amount*21*10; fertilizerCost=amount*8*50;
-      yieldMin=amount*132; points=amount*4; time="1 godzina";
-      plantingType="Gruntowe sadzenie <span style='color:red;'>(Ryzyko zachorowania!)</span>";
-      break;
-    case "mimosa":
-      skillLevels="🎗️ Poziomy umiejętności:<br>gruntowe: 7 lvl<br>doniczkowe: 8 lvl";
-      wet=amount*360; dry=amount*180; wetWeight=amount*36; dryWeight=amount*18;
-      waterCost=amount*30*10; fertilizerCost=amount*8*50; // Przykładowe koszty
-      yieldMin=amount*360; points=amount*8; time="3 godziny";
-      break;
+  // Limity
+  if ((type === "amnezja" && amount > 100) || 
+      (type === "kush" && amount > 50) || 
+      (type === "shaman" && amount > 25) ||
+      (type === "mimosa" && amount > 12)) {
+    resultDiv.innerHTML = "❌ Przekroczono limit sadzonek!";
+    return;
   }
 
-  totalCost=waterCost+fertilizerCost;
+  let data = {
+    amnezja: {water:5,fertilizer:2,yield:36,exp:20,points:1,grindLvl:1,potLvl:2,time:120},
+    kush: {water1:10,water2:5,fertilizer1:4,fertilizer2:2,yield:72,exp:50,points:2,grindLvl:3,potLvl:4,time:120},
+    shaman: {water1:21,water2:10,water5:4,fertilizer:8,yield:132,exp:100,points:4,grindLvl:5,potLvl:6,time:60},
+    mimosa: {water:12,fertilizer:3,yield:360,exp:200,points:8,grindLvl:7,potLvl:8,time:180}
+  };
 
-  // 💰 SPRZEDAŻ
-  if(sellType==="dealer"){ income=dry*1750; label="Dealer (1750$)"; }
-  else if(sellType==="hidden"){ income=dry*2100; label="Ukryty diler (2100$)"; }
-  else if(sellType==="player"){ income=dry*(price||0); label="Gracz"; }
+  // Woda i nawóz
+  let waterText = "";
+  let fertilizerText = "";
+  if(type==="amnezja"){
+    waterText = `${amount*data[type].water} x 1L <small>(jedna daje 50%)</small>`;
+    fertilizerText = `${amount*data[type].fertilizer} x 0.3L <small>(jedna daje 60%)</small>`;
+  } else if(type==="kush"){
+    waterText = `${amount*data[type].water1} x 1L <small>(25%)</small><br>${amount*data[type].water2} x 2L <small>(50%)</small>`;
+    fertilizerText = `${amount*data[type].fertilizer1} x 0.3L <small>(30%)</small><br>${amount*data[type].fertilizer2} x 0.6L <small>(60%)</small>`;
+  } else if(type==="shaman"){
+    waterText = `${amount*data[type].water1} x 1L <small>(13%)</small><br>${amount*data[type].water2} x 2L (.soon)<br>${amount*data[type].water5} x 5L (.soon)`;
+    fertilizerText = `${amount*data[type].fertilizer} x 0.3L <small>(20%)</small>`;
+  } else if(type==="mimosa"){
+    waterText = `${amount*data[type].water} x 1L <small>(40%)</small>`;
+    fertilizerText = `${amount*data[type].fertilizer} x 0.3L <small>(50%)</small>`;
+  }
 
-  profit=income-totalCost;
-  const tripsWet=Math.ceil(wetWeight/vehicle);
-  const tripsDry=Math.ceil(dryWeight/vehicle);
+  // Plony i punkty
+  let wet = 0, dry = 0;
+  if(type==="amnezja") {wet=amount*40; dry=amount*20;}
+  else if(type==="kush") {wet=amount*72; dry=amount*36;}
+  else if(type==="shaman") {wet=amount*132; dry=amount*66;}
+  else if(type==="mimosa") {wet=amount*360; dry=amount*180;}
 
-  // 🖥️ WYŚWIETLANIE
-  resultDiv.innerHTML=`
-🌱 <b>${amount}</b> sadzonek<br><small>${plantingType}</small><br><br>
-${skillLevels}<br><br>
-⏰ Czas: <b>${time}</b><br>
-🌿 Plony: <b>~${yieldMin}</b><br>
-🔹 Punkty upraw: <b>${points}</b><br><br>
+  let wetWeight = wet/12; // przykładowa waga 1 mokrego=0.083 kg
+  let dryWeight = dry/12; // 1 suche=0.083 kg
 
-🌿 Mokre: <b>${wet}</b><br>
-🌿 Suche: <b>${dry}</b><br><br>
+  let tripsWet = Math.ceil(wetWeight/vehicleCapacity);
+  let tripsDry = Math.ceil(dryWeight/vehicleCapacity);
 
-⚖️ Waga:<br>Mokre: <b>${wetWeight} kg</b><br>Suche: <b>${dryWeight} kg</b><br><br>
+  // Koszty
+  let waterCost = type==="amnezja"?amount*5*10 : type==="kush"?(amount*10*10 + amount*5*20):0;
+  let fertilizerCost = type==="amnezja"?amount*2*50: type==="kush"?(amount*4*50+amount*2*100):0;
+  let totalCost = waterCost + fertilizerCost;
 
-🚗 Transport:<br>Mokre: <b>${tripsWet}</b> kursów<br>Suche: <b>${tripsDry}</b> kursów<br><br>
+  // Liczba działek
+  let unit = 20;
+  let units = Math.ceil(dry/unit);
 
-💰 Sprzedaż:<br>Tryb: <b>${label}</b><br>Przychód: <b>${income}$</b><br><br>
+  // Sprzedaż
+  let dealerPrice = 1750;
+  let hiddenPrice = 2100;
+  if(type==="amnezja") {dealerPrice=1750; hiddenPrice=1850;}
+  if(type==="kush") {dealerPrice=1750; hiddenPrice=1850;}
+  if(type==="shaman") {dealerPrice=1750; hiddenPrice=1850;}
+  if(type==="mimosa") {dealerPrice=1750; hiddenPrice=1850;}
 
-💸 Koszty:<br>Woda: <b>${waterCost}$</b><br>Nawóz: <b>${fertilizerCost}$</b><br>Razem: <b>${totalCost}$</b><br><br>
+  let income = 0;
+  let label = "";
+  if(sellType==="dealer"){income=units*dealerPrice; label=`Dealer (${dealerPrice}$)`;}
+  else if(sellType==="hidden"){income=units*hiddenPrice; label=`Ukryty diler (${hiddenPrice}$)`;}
+  else if(sellType==="player"){income=price?units*price:0; label=`Sprzedaż graczowi`;}
 
-🔥 Zysk na czysto:<br><b style="color:${profit>=0?'lime':'red'}">${profit}$</b>
-`;
+  let profit = income - totalCost;
+
+  resultDiv.innerHTML = `
+    🌱 <b>${amount}</b> sadzonek<br>
+    <small>Gruntowe sadzenie</small><br><br>
+    🎗️ Poziomy umiejętności:<br>
+    gruntowe: ${data[type].grindLvl} lvl<br>
+    doniczkowe: ${data[type].potLvl} lvl<br><br>
+    🥤 Woda:<br>${waterText}<br><br>
+    ⛱️ Nawóz:<br>${fertilizerText}<br><br>
+    ⏰ Czas: <b>${data[type].time} min</b><br>
+    🌿 Plony: <b>${wet} mokrego / ${dry} suchego</b><br>
+    🔹 Punkty upraw: <b>${data[type].points*amount}</b><br><br>
+    ⚖️ Waga mokre: <b>${wetWeight.toFixed(2)} kg</b><br>
+    ⚖️ Waga suche: <b>${dryWeight.toFixed(2)} kg</b><br><br>
+    🚗 Transport:<br>
+    Mokre: <b>${tripsWet}</b> kursów<br>
+    Suche: <b>${tripsDry}</b> kursów<br><br>
+    💰 Sprzedaż:<br>
+    Tryb: <b>${label}</b><br>
+    Przychód: <b>${income}$</b><br><br>
+    💸 Koszty:<br>
+    Woda: <b>${waterCost}$</b><br>
+    Nawóz: <b>${fertilizerCost}$</b><br>
+    Razem: <b>${totalCost}$</b><br><br>
+    🔥 Zysk na czysto:<br>
+    <b style="color:${profit>=0?'lime':'red'}">${profit}$</b>
+  `;
 }
 </script>
+
 </body>
 </html>
