@@ -1,85 +1,109 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-  <meta charset="UTF-8">
-  <title>Kalkulator sadzonek</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #4a4a4a;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      height: 100vh;
-    }
+<meta charset="UTF-8">
+<title>Kalkulator sadzonek</title>
 
-    .container {
-      margin-top: 40px;
-      background: #2f2f2f;
-      padding: 25px 30px;
-      border-radius: 10px;
-      width: 500px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-      color: white;
-      position: relative;
-    }
+<style>
+:root {
+  --bg: linear-gradient(135deg, #1f2937, #111827);
+  --card: rgba(255,255,255,0.05);
+  --text: white;
+  --input: rgba(0,0,0,0.4);
+  --border: rgba(255,255,255,0.1);
+}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+.light {
+  --bg: linear-gradient(135deg, #e5e7eb, #f9fafb);
+  --card: rgba(255,255,255,0.8);
+  --text: #111;
+  --input: rgba(255,255,255,0.9);
+  --border: rgba(0,0,0,0.1);
+}
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: bold;
-    }
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
 
-    select, input, button {
-      width: 100%;
-      padding: 10px;
-      border-radius: 6px;
-      border: none;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
+}
 
-    select, input {
-      background: #1f1f1f;
-      color: white;
-    }
+.container {
+  width: 480px;
+  padding: 30px;
+  border-radius: 16px;
+  background: var(--card);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  border: 1px solid var(--border);
+}
 
-    button {
-      background: #3b82f6;
-      color: white;
-      cursor: pointer;
-    }
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
 
-    button:hover {
-      background: #2563eb;
-    }
+.toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  font-size: 18px;
+}
 
-    .result {
-      margin-top: 10px;
-      font-size: 16px;
-      text-align: center;
-    }
+select, input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--input);
+  color: var(--text);
+  margin-bottom: 15px;
+}
 
-    .footer {
-      text-align: center;
-      margin-top: 15px;
-      font-size: 13px;
-      color: #aaa;
-    }
-  </style>
+button {
+  width: 100%;
+  padding: 13px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  background: var(--input);
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-  <h1>Kalkulator sadzonek (1.0)</h1>
+  <div class="toggle" onclick="toggleTheme()">🌙</div>
 
-  <label for="type">Rodzaj odmiany:</label>
+  <h1>🌱 Kalkulator sadzonek</h1>
+
   <select id="type">
     <option value="">-- Wybierz odmianę --</option>
     <option value="amnezja">Amnezja</option>
@@ -88,8 +112,7 @@
     <option value="mimosa">Mimosa</option>
   </select>
 
-  <label for="amount">Ilość roślin:</label>
-  <input type="number" id="amount" placeholder="Podaj ilość">
+  <input type="number" id="amount" placeholder="Ilość (max 100)" max="100">
 
   <button onclick="calculate()">Oblicz</button>
 
@@ -99,36 +122,46 @@
 </div>
 
 <script>
+// 🌗 THEME
+function toggleTheme() {
+  document.body.classList.toggle("light");
+
+  const isLight = document.body.classList.contains("light");
+  localStorage.setItem("theme", isLight ? "light" : "dark");
+}
+
+// zapamiętywanie
+if (localStorage.getItem("theme") === "light") {
+  document.body.classList.add("light");
+}
+
+// 📊 kalkulator
 function calculate() {
   const type = document.getElementById("type").value;
   const amount = parseInt(document.getElementById("amount").value);
+  const resultDiv = document.getElementById("result");
 
   if (!type || !amount) {
-    document.getElementById("result").innerText = "Uzupełnij wszystkie pola!";
+    resultDiv.innerHTML = "⚠️ Uzupełnij wszystkie pola!";
     return;
   }
 
-  let multiplier = 1;
-
-  switch(type) {
-    case "amnezja":
-      multiplier = 1.2;
-      break;
-    case "kush":
-      multiplier = 1.5;
-      break;
-    case "shaman":
-      multiplier = 1.1;
-      break;
-    case "mimosa":
-      multiplier = 1.8;
-      break;
+  if (type === "amnezja" && amount > 100) {
+    resultDiv.innerHTML = "❌ Maksymalnie 100 sadzonek!";
+    return;
   }
 
-  const result = amount * multiplier;
+  let water = amount * 5;
+  let fertilizer = amount * 2;
+  let yieldMin = amount * 36;
 
-  document.getElementById("result").innerText =
-    "Wynik: " + result.toFixed(2);
+  resultDiv.innerHTML = `
+    🌱 <b>${amount}</b> sadzonek<br><br>
+    🥤 Woda: <b>${water}</b> L<br>
+    ⛱️ Nawóz: <b>${fertilizer}</b><br><br>
+    ⏰ Czas: <b>2 godziny</b><br>
+    🌿 Plony: <b>~${yieldMin}</b>
+  `;
 }
 </script>
 
