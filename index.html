@@ -186,35 +186,39 @@ function calculate() {
   let yieldMin = 0;
   let points = 0;
   let plantingType = "Gruntowe sadzenie";
+  let skillLevels = "";
 
-  if (type === "amnezja") {
+if (type === "amnezja") {
+    skillLevels = "🎗️ Poziomy umiejętności:<br>gruntowe: 1 lvl<br>doniczkowe: 2 lvl";
     water = `${amount * 5} x 1L <small>(jedna daje 50%)</small>`;
     fertilizer = `${amount * 2} x 0.3L <small>(jedna daje 60%)</small>`;
     yieldMin = amount * 36;
     points = amount * 1;
-  } else if (type === "kush") {
+} else if (type === "kush") {
+    skillLevels = "🎗️ Poziomy umiejętności:<br>gruntowe: 3 lvl<br>doniczkowe: 4 lvl";
     water = `${amount * 10} x 1L <small>(jedna daje 25%)</small><br>${amount * 5} x 2L <small>(jedna daje 50%)</small>`;
     fertilizer = `${amount * 4} x 0.3L <small>(jedna daje 30%)</small><br>${amount * 2} x 0.6L <small>(jedna daje 60%)</small>`;
     yieldMin = amount * 72;
     points = amount * 2;
-  } else if (type === "shaman") {
-    water = `${amount * 21} x 1L <small>(jedna daje 13%)</small><br>` +
-            `${amount * 10} x 2L (.soon)<br>` +
-            `${amount * 4} x 5L (.soon)`;
+} else if (type === "shaman") {
+    skillLevels = "🎗️ Poziomy umiejętności:<br>gruntowe: 5 lvl<br>doniczkowe: 6 lvl";
+    water = `${amount * 21} x 1L <small>(jedna daje 13%)</small><br>${amount * 10} x 2L (.soon)<br>${amount * 4} x 5L (.soon)`;
     fertilizer = `${amount * 8} x 0.3L <small>(jedna daje 20%)</small>`;
     yieldMin = amount * 130;
     points = amount * 4;
     plantingType = "Gruntowe sadzenie <span style='color:red;'>(Ryzyko zachorowania!)</span>";
-  } else if (type === "mimosa") {
+} else if (type === "mimosa") {
+    skillLevels = "🎗️ Poziomy umiejętności:<br>gruntowe: 7 lvl<br>doniczkowe: 8 lvl";
     water = `${amount * 12} x 1L <small>(jedna daje 40%)</small>`;
     fertilizer = `${amount * 3} x 0.3L <small>(jedna daje 50%)</small>`;
     yieldMin = amount * 90;
     points = amount * 3;
-  }
+}
 
-  resultDiv.innerHTML = `
+resultDiv.innerHTML = `
     🌱 <b>${amount}</b> sadzonek<br>
     <small>${plantingType}</small><br><br>
+    ${skillLevels}<br><br>
     🥤 Woda:<br>${water}<br><br>
     ⛱️ Nawóz:<br>${fertilizer}<br><br>
     ⏰ Czas: <b>${type === "shaman" ? "1 godzina" : "2 godziny"}</b><br>
