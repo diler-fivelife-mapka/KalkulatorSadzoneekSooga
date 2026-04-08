@@ -43,13 +43,14 @@ function calculate() {
     return;
   }
 
-  const data = {
-  amnezja:{wet:36,dry:20,water:5,fertilizer:2,grindLvl:1,potLvl:2,points:1,time:120},
-  kush:{wet:72,dry:36,water:10,water2:5,fertilizer:4,fertilizer2:2,grindLvl:3,potLvl:4,points:2,time:120},
-  shaman:{wet:132,dry:66,water:21,water2:10,water5:4,fertilizer:8,grindLvl:5,potLvl:6,points:4,time:60},
-  mimosa:{wet:360,dry:180,water:12,fertilizer:3,grindLvl:7,potLvl:8,points:8,time:180}
- };
   
+  const data = {
+    amnezja: { wet: 36, dry: 20, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
+    kush: { wet: 72, dry: 36, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
+    shaman: { wet: 132, dry: 66, water: 21, water2: 10, water5: 4, fertilizer: 8, grindLvl: 5, potLvl: 6, points: 4, time: 60 },
+    mimosa: { wet: 360, dry: 180, water: 12, fertilizer: 3, grindLvl: 7, potLvl: 8, points: 8, time: 180 }
+  };
+
   let waterText = "";
   let fertilizerText = "";
 
@@ -73,6 +74,7 @@ function calculate() {
   let wet = data[type].wet * amount;
   let dry = data[type].dry * amount;
 
+ 
   resultDiv.innerHTML = `
     🌱 <b>${amount}</b> sadzonek<br><br>
 
@@ -90,6 +92,7 @@ function calculate() {
     mokre: <b>${wet}</b><br>
     suche: <b>${dry}</b><br><br>
 
-  🔹 Punkty umiejętności: <b>+${data[type].points * amount} plantWeed</b>
+    🔹 Punkty umiejętności:<br>
+    <b>+${data[type].points * amount} plantWeed</b>
   `;
 }
