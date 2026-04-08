@@ -43,12 +43,12 @@ function calculate() {
     return;
   }
 
-  
+  // 🌱 DANE
   const data = {
-    amnezja: { wet: 36, dry: 20, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
-    kush: { wet: 72, dry: 36, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
-    shaman: { wet: 132, dry: 66, water: 21, water2: 10, water5: 4, fertilizer: 8, grindLvl: 5, potLvl: 6, points: 4, time: 60 },
-    mimosa: { wet: 360, dry: 180, water: 12, fertilizer: 3, grindLvl: 7, potLvl: 8, points: 8, time: 180 }
+    amnezja: { wet: 36, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
+    kush: { wet: 72, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
+    shaman: { wet: 132, water: 21, water2: 10, water5: 4, fertilizer: 8, grindLvl: 5, potLvl: 6, points: 4, time: 60 },
+    mimosa: { wet: 360, water: 12, fertilizer: 3, grindLvl: 7, potLvl: 8, points: 8, time: 180 }
   };
 
   let waterText = "";
@@ -71,10 +71,20 @@ function calculate() {
     fertilizerText = `${amount * data[type].fertilizer} x 0.3L`;
   }
 
+  // 🌾 PLONY
   let wet = data[type].wet * amount;
-  let dry = data[type].dry * amount;
+  let dry = wet / 2;
 
- 
+  // ⚖️ WAGA (1 = 0.1kg)
+  let wetWeight = wet * 0.1;
+  let dryWeight = dry * 0.1;
+
+  // 🚗 SURFER (30kg)
+  let capacity = 30;
+
+  let tripsWet = Math.ceil(wetWeight / capacity);
+  let tripsDry = Math.ceil(dryWeight / capacity);
+
   resultDiv.innerHTML = `
     🌱 <b>${amount}</b> sadzonek<br><br>
 
@@ -93,6 +103,16 @@ function calculate() {
     suche: <b>${dry}</b><br><br>
 
     🔹 Punkty umiejętności:<br>
-    <b>+${data[type].points * amount} plantWeed</b>
+    <b>+${data[type].points * amount} plantWeed</b><br><br>
+
+    <hr style="opacity:0.2">
+
+    🚗 Transport (Surfer 30kg):<br><br>
+
+    🌿 Mokre:<br>
+    ${wetWeight.toFixed(2)} kg → <b>${tripsWet}</b> kursów<br><br>
+
+    🌾 Suche:<br>
+    ${dryWeight.toFixed(2)} kg → <b>${tripsDry}</b> kursów
   `;
 }
