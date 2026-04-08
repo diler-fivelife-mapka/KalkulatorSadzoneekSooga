@@ -16,123 +16,53 @@
   --border: rgba(255,255,255,0.08);
 }
 
-* {
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+* { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:var(--bg); color:var(--text); overflow:hidden; }
+
+.container, .map-view {
+  width:540px; padding:30px; border-radius:18px; background:var(--card);
+  backdrop-filter:blur(16px); box-shadow:0 20px 60px rgba(0,0,0,0.6); border:1px solid var(--border);
 }
 
-body {
-  margin:0;
-  height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:var(--bg);
-  color:var(--text);
-}
+h1 { text-align:center; margin-bottom:5px; font-size:24px; }
+.subtitle { text-align:center; color:var(--muted); font-size:13px; margin-bottom:25px; }
 
-/* PANEL */
-.container {
-  width:540px;
-  padding:30px;
-  border-radius:18px;
-  background:var(--card);
-  backdrop-filter:blur(16px);
-  box-shadow:0 20px 60px rgba(0,0,0,0.6);
-  border:1px solid var(--border);
-}
-
-/* HEADER */
-h1 {
-  text-align:center;
-  margin-bottom:5px;
-  font-size:24px;
-}
-
-.subtitle {
-  text-align:center;
-  color:var(--muted);
-  font-size:13px;
-  margin-bottom:25px;
-}
-
-/* INPUTY */
-label {
-  font-size:13px;
-  color:var(--muted);
-  display:block;
-  margin-bottom:5px;
-}
+label { font-size:13px; color:var(--muted); display:block; margin-bottom:5px; }
 
 select, input {
-  width:100%;
-  padding:12px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,0.4);
-  color:var(--text);
-  margin-bottom:15px;
-  outline:none;
-  transition:0.2s;
+  width:100%; padding:12px; border-radius:10px; border:1px solid var(--border);
+  background:rgba(0,0,0,0.4); color:var(--text); margin-bottom:15px; outline:none; transition:0.2s;
 }
 
-select:focus, input:focus {
-  border-color:var(--accent);
-}
+select:focus, input:focus { border-color:var(--accent); }
 
-/* BUTTON */
 button {
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:10px;
-  background:var(--accent);
-  color:white;
-  cursor:pointer;
-  font-weight:600;
-  font-size:14px;
-  transition:0.2s;
+  width:100%; padding:14px; border:none; border-radius:10px; background:var(--accent);
+  color:white; cursor:pointer; font-weight:600; font-size:14px; transition:0.2s; margin-bottom:10px;
 }
 
-button:hover {
-  opacity:0.9;
-}
+button:hover { opacity:0.9; }
 
-/* RESULT */
 .result {
-  margin-top:20px;
-  padding:18px;
-  border-radius:12px;
-  background:rgba(0,0,0,0.5);
-  border:1px solid var(--border);
-  font-size:14px;
-  line-height:1.6;
+  margin-top:20px; padding:18px; border-radius:12px; background:rgba(0,0,0,0.5);
+  border:1px solid var(--border); font-size:14px; line-height:1.6;
 }
 
-/* PODZIAŁ SEKCJI */
-.section {
-  margin-bottom:12px;
-}
+.footer { text-align:center; margin-top:15px; font-size:12px; color:var(--muted); opacity:0.8; }
 
-.section b {
-  color:var(--accent);
-}
-
-/* FOOTER */
-.footer {
-  text-align:center;
-  margin-top:15px;
-  font-size:12px;
-  color:var(--muted);
-  opacity:0.8;
+.map-view { display:none; text-align:center; position:relative; }
+.map-view img {
+  width:100%; cursor:grab;
+  user-select:none;
+  position:absolute; top:0; left:0;
+  transition: transform 0.1s;
 }
 </style>
 </head>
 
 <body>
-
-<div class="container">
-
+<div class="container" id="calculator-view">
   <h1>🌱 Kalkulator sadzonek</h1>
   <div class="subtitle">Oblicz plony i wymagania uprawy</div>
 
@@ -149,16 +79,23 @@ button:hover {
   <input type="number" id="amount" placeholder="np. 10">
 
   <button onclick="calculate()">Oblicz</button>
+  <button onclick="showMap()">MAPA</button>
 
   <div class="result" id="result">
     ▶️ Wprowadź dane, aby zobaczyć wynik
   </div>
 
   <div class="footer">By Sooga</div>
-
 </div>
 
-<script src="script.js"></script>
+<div class="map-view" id="map-view">
+  <h2>🗺️ MAPA</h2>
+  <div style="position:relative; width:100%; height:400px; overflow:hidden; border-radius:12px; border:1px solid var(--border);">
+    <img id="map-image" src="mapa.jpg" alt="Mapa">
+  </div>
+  <button onclick="showCalculator()" style="margin-top:15px;">KALKULATOR</button>
+</div>
 
+<script src="script/script.js"></script>
 </body>
 </html>
