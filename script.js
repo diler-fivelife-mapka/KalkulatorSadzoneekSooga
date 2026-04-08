@@ -117,6 +117,10 @@ window.onload = function() {
           Wróć i wybierz inną odmianę
         </button>
       </div>
-    `;
-  };
+   const mapButton = document.getElementById("mapButton");
+
+// Po kliknięciu otwórz obraz w nowym oknie
+mapButton.onclick = () => {
+  window.open("mapa.jpg", "_blank");
+};
 };
