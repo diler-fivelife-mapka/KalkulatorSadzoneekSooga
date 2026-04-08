@@ -35,25 +35,13 @@ button { width:100%; padding:14px; border:none; border-radius:10px; background:v
 button:hover { opacity:0.9; }
 .result { margin-top:20px; padding:18px; border-radius:12px; background:rgba(0,0,0,0.5); border:1px solid var(--border); font-size:14px; line-height:1.6; }
 .footer { text-align:center; margin-top:15px; font-size:12px; color:var(--muted); opacity:0.8; }
-
-/* Map view */
-#map-view { display:none; width:100%; height:100%; position:relative; }
-#map-image { width:100%; cursor:grab; user-select:none; position:absolute; top:0; left:0; }
-.nav-buttons { display:flex; justify-content:space-between; margin-bottom:10px; }
-.nav-buttons button { width:48%; }
 </style>
 </head>
 <body>
 
-<!-- KALKULATOR -->
-<div id="calculator-view" class="container">
+<div class="container">
   <h1>🌱 Kalkulator sadzonek</h1>
   <div class="subtitle">Oblicz plony i wymagania uprawy</div>
-
-  <div class="nav-buttons">
-    <button onclick="showMap()">MAPA</button>
-    <button onclick="resetCalculator()">RESET</button>
-  </div>
 
   <label>Odmiana</label>
   <select id="type">
@@ -74,14 +62,6 @@ button:hover { opacity:0.9; }
   <div class="footer">By Sooga</div>
 </div>
 
-<!-- MAPA -->
-<div id="map-view" class="container">
-  <div class="nav-buttons">
-    <button onclick="showCalculator()">KALKULATOR</button>
-  </div>
-  <img id="map-image" src="mapa.jpg" alt="Mapa">
-</div>
-
-<script src="script/script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
