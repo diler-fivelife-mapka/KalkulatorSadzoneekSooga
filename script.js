@@ -1,123 +1,101 @@
-// ------------------- DANE -------------------
-const data = {
-  amnezja: { wet: 36, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
-  kush: { wet: 72, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
-  shaman: { wet: 132, water: 21, water2: 10, water5: 4, fertilizer: 8, grindLvl: 5, potLvl: 6, points: 4, time: 60 },
-  mimosa: { wet: 360, water: 12, fertilizer: 3, grindLvl: 7, potLvl: 8, points: 8, time: 180 }
-};
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<title>Kalkulator sadzonek</title>
 
-const vehicles = [
-  { name: "Surfer", capacity: 30 },
-  { name: "Moonbeam", capacity: 35 },
-  { name: "Lost Slamvan", capacity: 35 },
-  { name: "Guardian", capacity: 45 },
-  { name: "Sandking", capacity: 45 },
-  { name: "Volatus", capacity: 90 }
-];
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-// ------------------- RESET -------------------
-function resetCalculator() {
-  const typeSelect = document.getElementById("type");
-  const amountInput = document.getElementById("amount");
-  const resultDiv = document.getElementById("result");
-
-  typeSelect.value = "";
-  amountInput.value = "";
-  amountInput.placeholder = "np. 10";
-  resultDiv.innerHTML = "▶️ Wprowadź dane, aby zobaczyć wynik";
-
-  document.querySelector(".container").scrollIntoView({ behavior: "smooth" });
+<style>
+:root {
+  --bg: linear-gradient(135deg, #0f172a, #020617);
+  --card: rgba(15, 23, 42, 0.9);
+  --accent: #22c55e;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --border: rgba(255,255,255,0.08);
 }
 
-// ------------------- OBLICZENIA -------------------
-function calculate() {
-  const typeSelect = document.getElementById("type");
-  const amountInput = document.getElementById("amount");
-  const resultDiv = document.getElementById("result");
+* { box-sizing: border-box; font-family: 'Inter', sans-serif; }
 
-  const type = typeSelect.value;
-  const amount = parseInt(amountInput.value);
+body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:var(--bg); color:var(--text); overflow:hidden; }
 
-  if (!type || !amount || amount <= 0) {
-    resultDiv.innerHTML = "⚠️ Uzupełnij wszystkie pola!";
-    return;
-  }
-
-  // Woda i nawóz
-  let waterText = "", fertilizerText = "";
-  if(type === "amnezja") { 
-    waterText = `${amount*data[type].water} x 1L`;
-    fertilizerText = `${amount*data[type].fertilizer} x 0.3L`;
-  } else if(type === "kush") {
-    waterText = `${amount*data[type].water} x 1L<br>${amount*data[type].water2} x 2L`;
-    fertilizerText = `${amount*data[type].fertilizer} x 0.3L<br>${amount*data[type].fertilizer2} x 0.6L`;
-  } else if(type === "shaman") {
-    waterText = `${amount*data[type].water} x1L<br>${amount*data[type].water2}x2L<br>${amount*data[type].water5}x5L`;
-    fertilizerText = `${amount*data[type].fertilizer}x0.3L`;
-  } else if(type === "mimosa") {
-    waterText = `${amount*data[type].water} x 1L`;
-    fertilizerText = `${amount*data[type].fertilizer} x0.3L`;
-  }
-
-  // Plony
-  const wet = data[type].wet * amount;
-  const dry = wet / 2; // 2 mokrego = 1 suchego
-  const plotCount = Math.ceil(dry / 20);
-  const plotText = `${plotCount} działka${plotCount>1?'i':''}`;
-
-  // Czas suszenia (5s na 2 mokrego)
-  const dryingTimeSeconds = (wet / 2) * 5;
-
-  // Waga
-  const wetWeight = wet * 0.09;
-  const dryWeight = dry * 0.09;
-
-  // Transport
-  let transportHtml = "";
-  vehicles.forEach(v => {
-    const tripsWet = Math.ceil(wetWeight / v.capacity);
-    const tripsDry = Math.ceil(dryWeight / v.capacity);
-    transportHtml += `<b>${v.name}</b> - Mokre: ${tripsWet} kursów, Suche: ${tripsDry} kursów<br>`;
-  });
-
-  // Koszty
-  const waterCost = amount * data[type].water * 10;
-  const fertilizerCost = amount * data[type].fertilizer * 50;
-  const totalCost = waterCost + fertilizerCost;
-
-  // Sprzedaż
-  const dealerPrice = 1750;
-  const income = plotCount * dealerPrice;
-  const profit = income - totalCost;
-
-  // Wyświetlanie wyniku
-  resultDiv.innerHTML = `
-    🌱 <b>${amount}</b> sadzonek<br>
-    🎗️ Poziomy:<br>
-    gruntowe: ${data[type].grindLvl} lvl<br>
-    doniczkowe: ${data[type].potLvl} lvl<br><br>
-
-    🥤 Woda:<br>${waterText}<br><br>
-    ⛱️ Nawóz:<br>${fertilizerText}<br><br>
-    ⏰ Czas uprawy: <b>${data[type].time} min</b><br>
-    🌿 Plony:<br>
-    mokre: <b>${wet}</b><br>
-    suche: <b>${dry}</b><br>
-    ⏳ Czas suszenia: <b>${dryingTimeSeconds} s</b><br>
-    🏡 Działki: <b>${plotText}</b><br><br>
-    🔹 Punkty umiejętności: <b>+${data[type].points * amount} plantWeed</b><br><br>
-
-    ⚖️ Waga:<br>
-    mokre: <b>${wetWeight.toFixed(2)} kg</b><br>
-    suche: <b>${dryWeight.toFixed(2)} kg</b><br><br>
-
-    🚗 Transport:<br>${transportHtml}
-
-    <div style="text-align:center; margin-top:10px;">
-      <button onclick="resetCalculator()" 
-        style="padding:10px 20px; border:none; border-radius:8px; background:#22c55e; color:white; cursor:pointer;">
-        Wróć i wybierz inną odmianę
-      </button>
-    </div>
-  `;
+.container, .map-view {
+  width:540px; padding:30px; border-radius:18px; background:var(--card);
+  backdrop-filter:blur(16px); box-shadow:0 20px 60px rgba(0,0,0,0.6); border:1px solid var(--border);
 }
+
+h1 { text-align:center; margin-bottom:5px; font-size:24px; }
+.subtitle { text-align:center; color:var(--muted); font-size:13px; margin-bottom:25px; }
+
+label { font-size:13px; color:var(--muted); display:block; margin-bottom:5px; }
+
+select, input {
+  width:100%; padding:12px; border-radius:10px; border:1px solid var(--border);
+  background:rgba(0,0,0,0.4); color:var(--text); margin-bottom:15px; outline:none; transition:0.2s;
+}
+
+select:focus, input:focus { border-color:var(--accent); }
+
+button {
+  width:100%; padding:14px; border:none; border-radius:10px; background:var(--accent);
+  color:white; cursor:pointer; font-weight:600; font-size:14px; transition:0.2s; margin-bottom:10px;
+}
+
+button:hover { opacity:0.9; }
+
+.result {
+  margin-top:20px; padding:18px; border-radius:12px; background:rgba(0,0,0,0.5);
+  border:1px solid var(--border); font-size:14px; line-height:1.6;
+}
+
+.footer { text-align:center; margin-top:15px; font-size:12px; color:var(--muted); opacity:0.8; }
+
+.map-view { display:none; text-align:center; position:relative; }
+.map-view img {
+  width:100%; cursor:grab;
+  user-select:none;
+  position:absolute; top:0; left:0;
+  transition: transform 0.1s;
+}
+</style>
+</head>
+
+<body>
+<div class="container" id="calculator-view">
+  <h1>🌱 Kalkulator sadzonek</h1>
+  <div class="subtitle">Oblicz plony i wymagania uprawy</div>
+
+  <label>Odmiana</label>
+  <select id="type">
+    <option value="">-- wybierz --</option>
+    <option value="amnezja">Amnezja</option>
+    <option value="kush">Kush</option>
+    <option value="shaman">Shaman</option>
+    <option value="mimosa">Mimosa</option>
+  </select>
+
+  <label>Ilość sadzonek</label>
+  <input type="number" id="amount" placeholder="np. 10">
+
+  <button onclick="calculate()">Oblicz</button>
+  <button onclick="showMap()">MAPA</button>
+
+  <div class="result" id="result">
+    ▶️ Wprowadź dane, aby zobaczyć wynik
+  </div>
+
+  <div class="footer">By Sooga</div>
+</div>
+
+<div class="map-view" id="map-view">
+  <h2>🗺️ MAPA</h2>
+  <div style="position:relative; width:100%; height:400px; overflow:hidden; border-radius:12px; border:1px solid var(--border);">
+    <img id="map-image" src="mapa.jpg" alt="Mapa">
+  </div>
+  <button onclick="showCalculator()" style="margin-top:15px;">KALKULATOR</button>
+</div>
+
+<script src="script/script.js"></script>
+</body>
+</html>
