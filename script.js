@@ -23,6 +23,40 @@ typeSelect.addEventListener("change", function () {
   }
 });
 
+// Poprawna końcówka działek
+function getPlotText(plots) {
+  if (plots === 1) return "1 działka";
+  if (plots >= 2 && plots <= 4) return plots + " działki";
+  return plots + " działek";
+}
+
+// Reset kalkulatora
+function resetCalculator() {
+  typeSelect.value = "";
+  amountInput.value = "";
+  amountInput.placeholder = "Ilość sadzonek";
+  document.getElementById("result").innerHTML = "";
+  document.querySelector(".container").scrollIntoView({ behavior: "smooth" });
+}
+
+// Dane odmian
+const data = {
+  amnezja: { wet: 36, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
+  kush: { wet: 72, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
+  shaman: { wet: 132, water: 21, water2: 10, water5: 4, fertilizer: 8, grindLvl: 5, potLvl: 6, points: 4, time: 60 },
+  mimosa: { wet: 360, water: 12, fertilizer: 3, grindLvl: 7, potLvl: 8, points: 8, time: 180 }
+};
+
+// Auta
+const vehicles = [
+  { name: "Surfer", capacity: 30 },
+  { name: "Moonbeam", capacity: 35 },
+  { name: "Lost Slamvan", capacity: 35 },
+  { name: "Guardian", capacity: 45 },
+  { name: "Sandking", capacity: 45 },
+  { name: "Volatus", capacity: 90 }
+];
+
 function calculate() {
   const type = typeSelect.value;
   const amount = parseInt(amountInput.value);
@@ -33,18 +67,12 @@ function calculate() {
     return;
   }
 
-  // 🌱 Dane odmian
-  const data = {
-    amnezja: { wet: 36, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
-    kush: { wet: 72, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
-    shaman: { wet: 132, water: 21, water2: 10, water5: 4, fertilizer: 8, grindLvl: 5, potLvl: 6, points: 4, time: 60 },
-    mimosa: { wet: 360, water: 12, fertilizer: 3, grindLvl: 7, potLvl: 8, points: 8, time: 180 }
-  };
-
   let wet = data[type].wet * amount;
   let dry = wet / 2; // mokre → suche
+  let plots = Math.ceil(dry / 20);
+  let plotText = getPlotText(plots);
 
-  // 🌿 Woda i nawóz
+  // Woda i nawóz
   let waterText = "", fertilizerText = "";
   if(type==="amnezja"){
     waterText=`${amount*data[type].water} x 1L`;
@@ -60,25 +88,10 @@ function calculate() {
     fertilizerText=`${amount*data[type].fertilizer} x 0.3L`;
   }
 
-  // ⚖️ Waga (1 jednostka = 0.1 kg)
   let wetWeight = wet * 0.1;
   let dryWeight = dry * 0.1;
 
-  // 🏡 Liczymy działki
-  let plots = Math.ceil(dry / 20);
-  let plotText = plots + " działka" + (plots > 1 ? "i" : "");
-
-  // 🚗 AUTA
-  const vehicles = [
-    { name: "Surfer", capacity: 30 },
-    { name: "Moonbeam", capacity: 35 },
-    { name: "Lost Slamvan", capacity: 35 },
-    { name: "Guardian", capacity: 45 },
-    { name: "Sandking", capacity: 45 },
-    { name: "Volatus", capacity: 90 }
-  ];
-
-  // Obliczamy kursy dla każdego auta
+  // Transport
   let transportHtml = "";
   vehicles.forEach(v => {
     const tripsWet = Math.ceil(wetWeight / v.capacity);
@@ -90,7 +103,6 @@ function calculate() {
     `;
   });
 
-  // Wyświetlamy wyniki
   resultDiv.innerHTML = `
     🌱 <b>${amount}</b> sadzonek<br><br>
 
@@ -99,7 +111,6 @@ function calculate() {
     doniczkowe: <b>${data[type].potLvl}</b><br><br>
 
     🥤 Woda:<br>${waterText}<br><br>
-
     🌿 Nawóz:<br>${fertilizerText}<br><br>
 
     ⏰ Czas: <b>${data[type].time} min</b><br><br>
@@ -116,5 +127,11 @@ function calculate() {
 
     🚗 Transport:<br><br>
     ${transportHtml}
+
+    <div style="text-align:center; margin-top:10px;">
+      <button onclick="resetCalculator()" style="padding:10px 20px; border:none; border-radius:8px; background:#2563eb; color:white; cursor:pointer;">Wróć i wybierz inną odmianę</button>
+    </div>
+
+    <div style="text-align:center; font-size:12px; opacity:0.7; margin-top:5px;">By Sooga</div>
   `;
 }
