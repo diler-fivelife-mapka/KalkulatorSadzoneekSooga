@@ -4,22 +4,21 @@
 <meta charset="UTF-8">
 <title>Kalkulator sadzonek</title>
 
-<!-- FONT GTA STYLE -->
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 :root {
-  --bg: radial-gradient(circle at top, #0f172a, #020617);
-  --card: rgba(15, 23, 42, 0.85);
-  --neon: #22c55e;
-  --neon2: #3b82f6;
+  --bg: linear-gradient(135deg, #0f172a, #020617);
+  --card: rgba(15, 23, 42, 0.9);
+  --accent: #22c55e;
   --text: #e5e7eb;
+  --muted: #94a3b8;
   --border: rgba(255,255,255,0.08);
 }
 
 * {
   box-sizing: border-box;
-  font-family: 'Orbitron', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 body {
@@ -34,35 +33,43 @@ body {
 
 /* PANEL */
 .container {
-  width:520px;
+  width:540px;
   padding:30px;
   border-radius:18px;
   background:var(--card);
-  backdrop-filter:blur(20px);
-  box-shadow:
-    0 0 40px rgba(0,0,0,0.8),
-    0 0 20px rgba(34,197,94,0.15);
+  backdrop-filter:blur(16px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
   border:1px solid var(--border);
-  position:relative;
 }
 
 /* HEADER */
 h1 {
   text-align:center;
+  margin-bottom:5px;
+  font-size:24px;
+}
+
+.subtitle {
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
   margin-bottom:25px;
-  font-size:22px;
-  letter-spacing:2px;
-  color:var(--neon);
-  text-shadow:0 0 10px rgba(34,197,94,0.7);
 }
 
 /* INPUTY */
+label {
+  font-size:13px;
+  color:var(--muted);
+  display:block;
+  margin-bottom:5px;
+}
+
 select, input {
   width:100%;
   padding:12px;
   border-radius:10px;
   border:1px solid var(--border);
-  background:rgba(0,0,0,0.5);
+  background:rgba(0,0,0,0.4);
   color:var(--text);
   margin-bottom:15px;
   outline:none;
@@ -70,51 +77,54 @@ select, input {
 }
 
 select:focus, input:focus {
-  border-color:var(--neon);
-  box-shadow:0 0 10px rgba(34,197,94,0.5);
+  border-color:var(--accent);
 }
 
-/* PRZYCISK */
+/* BUTTON */
 button {
   width:100%;
   padding:14px;
   border:none;
   border-radius:10px;
-  background:linear-gradient(135deg, #22c55e, #16a34a);
+  background:var(--accent);
   color:white;
   cursor:pointer;
   font-weight:600;
-  letter-spacing:1px;
+  font-size:14px;
   transition:0.2s;
 }
 
 button:hover {
-  transform:scale(1.03);
-  box-shadow:0 0 15px rgba(34,197,94,0.6);
+  opacity:0.9;
 }
 
-/* WYNIK */
+/* RESULT */
 .result {
   margin-top:20px;
-  padding:15px;
-  border-radius:10px;
-  background:rgba(0,0,0,0.6);
-  text-align:center;
-  font-size:14px;
+  padding:18px;
+  border-radius:12px;
+  background:rgba(0,0,0,0.5);
   border:1px solid var(--border);
-  box-shadow:inset 0 0 10px rgba(0,0,0,0.8);
+  font-size:14px;
+  line-height:1.6;
 }
 
-/* MAŁY DETAL GTA */
-.container::before {
-  content:"";
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  height:3px;
-  background:linear-gradient(90deg, transparent, var(--neon), transparent);
-  border-radius:20px;
+/* PODZIAŁ SEKCJI */
+.section {
+  margin-bottom:12px;
+}
+
+.section b {
+  color:var(--accent);
+}
+
+/* FOOTER */
+.footer {
+  text-align:center;
+  margin-top:15px;
+  font-size:12px;
+  color:var(--muted);
+  opacity:0.8;
 }
 </style>
 </head>
@@ -123,23 +133,28 @@ button:hover {
 
 <div class="container">
 
-  <h1>🌱 GROW CALCULATOR</h1>
+  <h1>🌱 Kalkulator sadzonek</h1>
+  <div class="subtitle">Oblicz plony i wymagania uprawy</div>
 
+  <label>Odmiana</label>
   <select id="type">
-    <option value="">-- WYBIERZ ODMIANĘ --</option>
-    <option value="amnezja">AMNEZJA</option>
-    <option value="kush">KUSH</option>
-    <option value="shaman">SHAMAN</option>
-    <option value="mimosa">MIMOSA</option>
+    <option value="">-- wybierz --</option>
+    <option value="amnezja">Amnezja</option>
+    <option value="kush">Kush</option>
+    <option value="shaman">Shaman</option>
+    <option value="mimosa">Mimosa</option>
   </select>
 
-  <input type="number" id="amount" placeholder="ILOŚĆ SADZONEK">
+  <label>Ilość sadzonek</label>
+  <input type="number" id="amount" placeholder="np. 10">
 
-  <button onclick="calculate()">OBLICZ</button>
+  <button onclick="calculate()">Oblicz</button>
 
   <div class="result" id="result">
-    ▶️ Wprowadź dane, aby rozpocząć...
+    ▶️ Wprowadź dane, aby zobaczyć wynik
   </div>
+
+  <div class="footer">By Sooga</div>
 
 </div>
 
