@@ -33,17 +33,7 @@ function calculate() {
     return;
   }
 
-  if (
-    (type === "amnezja" && amount > 100) ||
-    (type === "kush" && amount > 50) ||
-    (type === "shaman" && amount > 25) ||
-    (type === "mimosa" && amount > 12)
-  ) {
-    resultDiv.innerHTML = "❌ Przekroczono limit sadzonek!";
-    return;
-  }
-
-  // 🌱 DANE SADZONEK
+  // 🌱 Dane odmian
   const data = {
     amnezja: { wet: 36, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
     kush: { wet: 72, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
@@ -51,42 +41,44 @@ function calculate() {
     mimosa: { wet: 360, water: 12, fertilizer: 3, grindLvl: 7, potLvl: 8, points: 8, time: 180 }
   };
 
-  let waterText = "";
-  let fertilizerText = "";
-
-  if (type === "amnezja") {
-    waterText = `${amount * data[type].water} x 1L`;
-    fertilizerText = `${amount * data[type].fertilizer} x 0.3L`;
-  } else if (type === "kush") {
-    waterText = `${amount * data[type].water} x 1L<br>${amount * data[type].water2} x 2L`;
-    fertilizerText = `${amount * data[type].fertilizer} x 0.3L<br>${amount * data[type].fertilizer2} x 0.6L`;
-  } else if (type === "shaman") {
-    waterText = `${amount * data[type].water} x 1L<br>${amount * data[type].water2} x 2L<br>${amount * data[type].water5} x 5L`;
-    fertilizerText = `${amount * data[type].fertilizer} x 0.3L`;
-  } else if (type === "mimosa") {
-    waterText = `${amount * data[type].water} x 1L`;
-    fertilizerText = `${amount * data[type].fertilizer} x 0.3L`;
-  }
-
-  // 🌾 PLONY
   let wet = data[type].wet * amount;
   let dry = wet / 2; // mokre → suche
 
-  // ⚖️ WAGA (1 jednostka = 0.1 kg)
+  // 🌿 Woda i nawóz
+  let waterText = "", fertilizerText = "";
+  if(type==="amnezja"){
+    waterText=`${amount*data[type].water} x 1L`;
+    fertilizerText=`${amount*data[type].fertilizer} x 0.3L`;
+  } else if(type==="kush"){
+    waterText=`${amount*data[type].water} x 1L<br>${amount*data[type].water2} x 2L`;
+    fertilizerText=`${amount*data[type].fertilizer} x 0.3L<br>${amount*data[type].fertilizer2} x 0.6L`;
+  } else if(type==="shaman"){
+    waterText=`${amount*data[type].water} x 1L<br>${amount*data[type].water2} x 2L<br>${amount*data[type].water5} x 5L`;
+    fertilizerText=`${amount*data[type].fertilizer} x 0.3L`;
+  } else if(type==="mimosa"){
+    waterText=`${amount*data[type].water} x 1L`;
+    fertilizerText=`${amount*data[type].fertilizer} x 0.3L`;
+  }
+
+  // ⚖️ Waga (1 jednostka = 0.1 kg)
   let wetWeight = wet * 0.1;
   let dryWeight = dry * 0.1;
 
-  // 🚗 AUTA
-const vehicles = [
-  { name: "Surfer", capacity: 30 },
-  { name: "Moonbeam", capacity: 35 },
-  { name: "Lost Slamvan", capacity: 35 },
-  { name: "Guardian", capacity: 45 },
-  { name: "Sandking", capacity: 45 },
-  { name: "Volatus", capacity: 90 }
-];
+  // 🏡 Liczymy działki
+  let plots = Math.ceil(dry / 20);
+  let plotText = plots + " działka" + (plots > 1 ? "i" : "");
 
-  // Oblicz kursy dla każdego auta
+  // 🚗 AUTA
+  const vehicles = [
+    { name: "Surfer", capacity: 30 },
+    { name: "Moonbeam", capacity: 35 },
+    { name: "Lost Slamvan", capacity: 35 },
+    { name: "Guardian", capacity: 45 },
+    { name: "Sandking", capacity: 45 },
+    { name: "Volatus", capacity: 90 }
+  ];
+
+  // Obliczamy kursy dla każdego auta
   let transportHtml = "";
   vehicles.forEach(v => {
     const tripsWet = Math.ceil(wetWeight / v.capacity);
@@ -98,7 +90,7 @@ const vehicles = [
     `;
   });
 
-  // Wyświetlenie wyników
+  // Wyświetlamy wyniki
   resultDiv.innerHTML = `
     🌱 <b>${amount}</b> sadzonek<br><br>
 
@@ -114,7 +106,8 @@ const vehicles = [
 
     🌾 Plony:<br>
     mokre: <b>${wet}</b><br>
-    suche: <b>${dry}</b><br><br>
+    suche: <b>${dry}</b><br>
+    🏡 Działki: <b>${plotText}</b><br><br>
 
     🔹 Punkty umiejętności:<br>
     <b>+${data[type].points * amount} plantWeed</b><br><br>
