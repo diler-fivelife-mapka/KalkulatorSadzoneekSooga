@@ -15,12 +15,47 @@ window.onload = function() {
     { name: "Volatus", capacity: 90 }
   ];
 
+  const mapButton = document.getElementById("mapButton");
+  const mapOverlay = document.getElementById("mapOverlay");
+  const closeMap = document.getElementById("closeMap");
+  const mapImage = document.getElementById("mapImage");
+
+  // Obsługa MAPY
+  mapButton.onclick = () => mapOverlay.style.display = "flex";
+  closeMap.onclick = () => mapOverlay.style.display = "none";
+
+  // Przeciąganie mapy
+  let isDragging = false;
+  let startX, startY, scrollLeft, scrollTop;
+
+  mapImage.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startX = e.pageX - mapImage.offsetLeft;
+    startY = e.pageY - mapImage.offsetTop;
+    mapImage.style.cursor = "grabbing";
+  });
+
+  window.addEventListener("mouseup", () => {
+    isDragging = false;
+    mapImage.style.cursor = "grab";
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if(!isDragging) return;
+    e.preventDefault();
+    mapImage.style.position = "relative";
+    mapImage.style.left = (e.pageX - startX) + "px";
+    mapImage.style.top = (e.pageY - startY) + "px";
+  });
+
+  // RESET CALCULATOR
   window.resetCalculator = function() {
     document.getElementById("type").value = "";
     document.getElementById("amount").value = "";
     document.getElementById("result").innerHTML = "▶️ Wprowadź dane, aby zobaczyć wynik";
   };
 
+  // KALKULATOR
   window.calculate = function() {
     const type = document.getElementById("type").value;
     const amount = parseInt(document.getElementById("amount").value);
