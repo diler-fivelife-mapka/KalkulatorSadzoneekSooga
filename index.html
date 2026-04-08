@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Kalkulator sadzonek</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
 :root {
   --bg: linear-gradient(135deg, #0f172a, #020617);
@@ -15,56 +13,47 @@
   --muted: #94a3b8;
   --border: rgba(255,255,255,0.08);
 }
-
 * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+body { margin:0;height:100vh;display:flex;justify-content:center;align-items:center;background:var(--bg);color:var(--text); }
 
-body { margin:0; height:100vh; display:flex; justify-content:center; align-items:center; background:var(--bg); color:var(--text); overflow:hidden; }
-
-.container, .map-view {
-  width:540px; padding:30px; border-radius:18px; background:var(--card);
-  backdrop-filter:blur(16px); box-shadow:0 20px 60px rgba(0,0,0,0.6); border:1px solid var(--border);
+.container {
+  width:540px;
+  padding:30px;
+  border-radius:18px;
+  background:var(--card);
+  backdrop-filter:blur(16px);
+  box-shadow:0 20px 60px rgba(0,0,0,0.6);
+  border:1px solid var(--border);
 }
 
 h1 { text-align:center; margin-bottom:5px; font-size:24px; }
 .subtitle { text-align:center; color:var(--muted); font-size:13px; margin-bottom:25px; }
-
 label { font-size:13px; color:var(--muted); display:block; margin-bottom:5px; }
-
-select, input {
-  width:100%; padding:12px; border-radius:10px; border:1px solid var(--border);
-  background:rgba(0,0,0,0.4); color:var(--text); margin-bottom:15px; outline:none; transition:0.2s;
-}
-
+select, input { width:100%; padding:12px; border-radius:10px; border:1px solid var(--border); background:rgba(0,0,0,0.4); color:var(--text); margin-bottom:15px; outline:none; transition:0.2s; }
 select:focus, input:focus { border-color:var(--accent); }
-
-button {
-  width:100%; padding:14px; border:none; border-radius:10px; background:var(--accent);
-  color:white; cursor:pointer; font-weight:600; font-size:14px; transition:0.2s; margin-bottom:10px;
-}
-
+button { width:100%; padding:14px; border:none; border-radius:10px; background:var(--accent); color:white; cursor:pointer; font-weight:600; font-size:14px; transition:0.2s; }
 button:hover { opacity:0.9; }
-
-.result {
-  margin-top:20px; padding:18px; border-radius:12px; background:rgba(0,0,0,0.5);
-  border:1px solid var(--border); font-size:14px; line-height:1.6;
-}
-
+.result { margin-top:20px; padding:18px; border-radius:12px; background:rgba(0,0,0,0.5); border:1px solid var(--border); font-size:14px; line-height:1.6; }
 .footer { text-align:center; margin-top:15px; font-size:12px; color:var(--muted); opacity:0.8; }
 
-.map-view { display:none; text-align:center; position:relative; }
-.map-view img {
-  width:100%; cursor:grab;
-  user-select:none;
-  position:absolute; top:0; left:0;
-  transition: transform 0.1s;
-}
+/* Map view */
+#map-view { display:none; width:100%; height:100%; position:relative; }
+#map-image { width:100%; cursor:grab; user-select:none; position:absolute; top:0; left:0; }
+.nav-buttons { display:flex; justify-content:space-between; margin-bottom:10px; }
+.nav-buttons button { width:48%; }
 </style>
 </head>
-
 <body>
-<div class="container" id="calculator-view">
+
+<!-- KALKULATOR -->
+<div id="calculator-view" class="container">
   <h1>🌱 Kalkulator sadzonek</h1>
   <div class="subtitle">Oblicz plony i wymagania uprawy</div>
+
+  <div class="nav-buttons">
+    <button onclick="showMap()">MAPA</button>
+    <button onclick="resetCalculator()">RESET</button>
+  </div>
 
   <label>Odmiana</label>
   <select id="type">
@@ -79,21 +68,18 @@ button:hover { opacity:0.9; }
   <input type="number" id="amount" placeholder="np. 10">
 
   <button onclick="calculate()">Oblicz</button>
-  <button onclick="showMap()">MAPA</button>
 
-  <div class="result" id="result">
-    ▶️ Wprowadź dane, aby zobaczyć wynik
-  </div>
+  <div class="result" id="result">▶️ Wprowadź dane, aby zobaczyć wynik</div>
 
   <div class="footer">By Sooga</div>
 </div>
 
-<div class="map-view" id="map-view">
-  <h2>🗺️ MAPA</h2>
-  <div style="position:relative; width:100%; height:400px; overflow:hidden; border-radius:12px; border:1px solid var(--border);">
-    <img id="map-image" src="mapa.jpg" alt="Mapa">
+<!-- MAPA -->
+<div id="map-view" class="container">
+  <div class="nav-buttons">
+    <button onclick="showCalculator()">KALKULATOR</button>
   </div>
-  <button onclick="showCalculator()" style="margin-top:15px;">KALKULATOR</button>
+  <img id="map-image" src="mapa.jpg" alt="Mapa">
 </div>
 
 <script src="script/script.js"></script>
