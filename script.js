@@ -1,5 +1,4 @@
 window.onload = function() {
-  // ------------------- DANE -------------------
   const data = {
     amnezja: { wet: 36, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
     kush: { wet: 72, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
@@ -16,16 +15,12 @@ window.onload = function() {
     { name: "Volatus", capacity: 90 }
   ];
 
-  // ------------------- RESET -------------------
   window.resetCalculator = function() {
     document.getElementById("type").value = "";
     document.getElementById("amount").value = "";
-    document.getElementById("amount").placeholder = "np. 10";
     document.getElementById("result").innerHTML = "▶️ Wprowadź dane, aby zobaczyć wynik";
-    document.getElementById("calculator-view").scrollIntoView({ behavior: "smooth" });
   };
 
-  // ------------------- PRZEŁĄCZANIE WIDOKÓW -------------------
   window.showMap = function() {
     document.getElementById("calculator-view").style.display = "none";
     document.getElementById("map-view").style.display = "block";
@@ -36,32 +31,30 @@ window.onload = function() {
     document.getElementById("calculator-view").style.display = "block";
   };
 
-  // ------------------- OBLICZENIA -------------------
   window.calculate = function() {
     const type = document.getElementById("type").value;
     const amount = parseInt(document.getElementById("amount").value);
     const resultDiv = document.getElementById("result");
 
-    if (!type || !amount || amount <= 0) {
+    if(!type || !amount || amount<=0) {
       resultDiv.innerHTML = "⚠️ Uzupełnij wszystkie pola!";
       return;
     }
 
     let waterText="", fertilizerText="";
-    if(type === "amnezja") { waterText = `${amount*data[type].water} x 1L`; fertilizerText = `${amount*data[type].fertilizer} x 0.3L`; }
-    else if(type === "kush") { waterText = `${amount*data[type].water} x 1L<br>${amount*data[type].water2} x 2L`; fertilizerText = `${amount*data[type].fertilizer} x 0.3L<br>${amount*data[type].fertilizer2} x 0.6L`; }
-    else if(type === "shaman") { waterText = `${amount*data[type].water} x1L<br>${amount*data[type].water2}x2L<br>${amount*data[type].water5}x5L`; fertilizerText = `${amount*data[type].fertilizer}x0.3L`; }
-    else if(type === "mimosa") { waterText = `${amount*data[type].water} x 1L`; fertilizerText = `${amount*data[type].fertilizer} x0.3L`; }
+    if(type==="amnezja"){ waterText = `${amount*data[type].water} x 1L`; fertilizerText = `${amount*data[type].fertilizer} x 0.3L`; }
+    else if(type==="kush"){ waterText = `${amount*data[type].water} x1L<br>${amount*data[type].water2} x2L`; fertilizerText = `${amount*data[type].fertilizer} x0.3L<br>${amount*data[type].fertilizer2} x0.6L`; }
+    else if(type==="shaman"){ waterText = `${amount*data[type].water} x1L<br>${amount*data[type].water2} x2L<br>${amount*data[type].water5} x5L`; fertilizerText = `${amount*data[type].fertilizer} x0.3L`; }
+    else if(type==="mimosa"){ waterText = `${amount*data[type].water} x1L`; fertilizerText = `${amount*data[type].fertilizer} x0.3L`; }
 
     const wet = data[type].wet * amount;
-    const dry = wet / 2; // 2 mokrego = 1 suchego
-    const plotCount = Math.ceil(dry / 20);
+    const dry = wet/2; // 2 mokrego = 1 suchego
+    const plotCount = Math.ceil(dry/20);
     const plotText = `${plotCount} działka${plotCount>1?'i':''}`;
+    const dryingTime = (wet/2)*5;
 
-    const dryingTimeSeconds = (wet/2) * 5; // 5s na 2 mokrego
-
-    const wetWeight = wet * 0.09;
-    const dryWeight = dry * 0.09;
+    const wetWeight = wet*0.09;
+    const dryWeight = dry*0.09;
 
     let transportHtml = "";
     vehicles.forEach(v => {
@@ -72,7 +65,7 @@ window.onload = function() {
 
     const waterCost = amount*data[type].water*10;
     const fertilizerCost = amount*data[type].fertilizer*50;
-    const totalCost = waterCost + fertilizerCost;
+    const totalCost = waterCost+fertilizerCost;
     const income = plotCount*1750;
     const profit = income - totalCost;
 
@@ -87,9 +80,9 @@ window.onload = function() {
       🌿 Plony:<br>
       mokre: <b>${wet}</b><br>
       suche: <b>${dry}</b><br>
-      ⏳ Czas suszenia: <b>${dryingTimeSeconds} s</b><br>
+      ⏳ Czas suszenia: <b>${dryingTime} s</b><br>
       🏡 Działki: <b>${plotText}</b><br><br>
-      🔹 Punkty umiejętności: <b>+${data[type].points * amount} plantWeed</b><br><br>
+      🔹 Punkty umiejętności: <b>+${data[type].points*amount} plantWeed</b><br><br>
       ⚖️ Waga:<br>
       mokre: <b>${wetWeight.toFixed(2)} kg</b><br>
       suche: <b>${dryWeight.toFixed(2)} kg</b><br><br>
@@ -102,29 +95,14 @@ window.onload = function() {
     `;
   };
 
-  // ------------------- MAPA PRZESUWALNA -------------------
+  // ------------------- MAPA -------------------
   const mapImage = document.getElementById("map-image");
-  let isDragging = false;
-  let startX, startY, origX = 0, origY = 0;
-
-  mapImage.addEventListener("mousedown", (e) => {
-    isDragging = true;
-    startX = e.clientX;
-    startY = e.clientY;
-    mapImage.style.cursor = "grabbing";
-  });
-
-  window.addEventListener("mouseup", () => { isDragging = false; mapImage.style.cursor = "grab"; });
-
-  window.addEventListener("mousemove", (e) => {
-    if (!isDragging) return;
-    const dx = e.clientX - startX;
-    const dy = e.clientY - startY;
-    mapImage.style.transform = `translate(${origX+dx}px, ${origY+dy}px)`;
-  });
-
-  mapImage.addEventListener("mouseup", () => {
+  let isDragging=false, startX, startY, origX=0, origY=0;
+  mapImage.addEventListener("mousedown", (e)=>{ isDragging=true; startX=e.clientX; startY=e.clientY; mapImage.style.cursor="grabbing"; });
+  window.addEventListener("mouseup", ()=>{ isDragging=false; mapImage.style.cursor="grab"; });
+  window.addEventListener("mousemove", (e)=>{ if(!isDragging) return; const dx=e.clientX-startX, dy=e.clientY-startY; mapImage.style.transform=`translate(${origX+dx}px, ${origY+dy}px)`; });
+  mapImage.addEventListener("mouseup", ()=>{
     const style = mapImage.style.transform.match(/translate\(([-\d.]+)px, ([-\d.]+)px\)/);
-    if(style){ origX = parseFloat(style[1]); origY = parseFloat(style[2]); }
+    if(style){ origX=parseFloat(style[1]); origY=parseFloat(style[2]); }
   });
 };
