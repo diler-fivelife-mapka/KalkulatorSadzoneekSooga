@@ -21,22 +21,12 @@ window.onload = function() {
     document.getElementById("result").innerHTML = "▶️ Wprowadź dane, aby zobaczyć wynik";
   };
 
-  window.showMap = function() {
-    document.getElementById("calculator-view").style.display = "none";
-    document.getElementById("map-view").style.display = "block";
-  };
-
-  window.showCalculator = function() {
-    document.getElementById("map-view").style.display = "none";
-    document.getElementById("calculator-view").style.display = "block";
-  };
-
   window.calculate = function() {
     const type = document.getElementById("type").value;
     const amount = parseInt(document.getElementById("amount").value);
     const resultDiv = document.getElementById("result");
 
-    if(!type || !amount || amount<=0) {
+    if(!type || !amount || amount <= 0) {
       resultDiv.innerHTML = "⚠️ Uzupełnij wszystkie pola!";
       return;
     }
@@ -48,10 +38,10 @@ window.onload = function() {
     else if(type==="mimosa"){ waterText = `${amount*data[type].water} x1L`; fertilizerText = `${amount*data[type].fertilizer} x0.3L`; }
 
     const wet = data[type].wet * amount;
-    const dry = wet/2; // 2 mokrego = 1 suchego
-    const plotCount = Math.ceil(dry/20);
+    const dry = wet / 2; // 2 mokrego = 1 suchego
+    const plotCount = Math.ceil(dry / 20);
     const plotText = `${plotCount} działka${plotCount>1?'i':''}`;
-    const dryingTime = (wet/2)*5;
+    const dryingTime = (wet/2)*5; // cooldown 5s na 2 mokrego -> 1 suchego
 
     const wetWeight = wet*0.09;
     const dryWeight = dry*0.09;
@@ -65,7 +55,7 @@ window.onload = function() {
 
     const waterCost = amount*data[type].water*10;
     const fertilizerCost = amount*data[type].fertilizer*50;
-    const totalCost = waterCost+fertilizerCost;
+    const totalCost = waterCost + fertilizerCost;
     const income = plotCount*1750;
     const profit = income - totalCost;
 
@@ -94,15 +84,4 @@ window.onload = function() {
       </div>
     `;
   };
-
-  // ------------------- MAPA -------------------
-  const mapImage = document.getElementById("map-image");
-  let isDragging=false, startX, startY, origX=0, origY=0;
-  mapImage.addEventListener("mousedown", (e)=>{ isDragging=true; startX=e.clientX; startY=e.clientY; mapImage.style.cursor="grabbing"; });
-  window.addEventListener("mouseup", ()=>{ isDragging=false; mapImage.style.cursor="grab"; });
-  window.addEventListener("mousemove", (e)=>{ if(!isDragging) return; const dx=e.clientX-startX, dy=e.clientY-startY; mapImage.style.transform=`translate(${origX+dx}px, ${origY+dy}px)`; });
-  mapImage.addEventListener("mouseup", ()=>{
-    const style = mapImage.style.transform.match(/translate\(([-\d.]+)px, ([-\d.]+)px\)/);
-    if(style){ origX=parseFloat(style[1]); origY=parseFloat(style[2]); }
-  });
 };
