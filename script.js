@@ -43,7 +43,7 @@ function calculate() {
     return;
   }
 
-  // 🌱 DANE
+  // 🌱 DANE SADZONEK
   const data = {
     amnezja: { wet: 36, water: 5, fertilizer: 2, grindLvl: 1, potLvl: 2, points: 1, time: 120 },
     kush: { wet: 72, water: 10, water2: 5, fertilizer: 4, fertilizer2: 2, grindLvl: 3, potLvl: 4, points: 2, time: 120 },
@@ -57,34 +57,48 @@ function calculate() {
   if (type === "amnezja") {
     waterText = `${amount * data[type].water} x 1L`;
     fertilizerText = `${amount * data[type].fertilizer} x 0.3L`;
-  }
-  else if (type === "kush") {
+  } else if (type === "kush") {
     waterText = `${amount * data[type].water} x 1L<br>${amount * data[type].water2} x 2L`;
     fertilizerText = `${amount * data[type].fertilizer} x 0.3L<br>${amount * data[type].fertilizer2} x 0.6L`;
-  }
-  else if (type === "shaman") {
+  } else if (type === "shaman") {
     waterText = `${amount * data[type].water} x 1L<br>${amount * data[type].water2} x 2L<br>${amount * data[type].water5} x 5L`;
     fertilizerText = `${amount * data[type].fertilizer} x 0.3L`;
-  }
-  else if (type === "mimosa") {
+  } else if (type === "mimosa") {
     waterText = `${amount * data[type].water} x 1L`;
     fertilizerText = `${amount * data[type].fertilizer} x 0.3L`;
   }
 
   // 🌾 PLONY
   let wet = data[type].wet * amount;
-  let dry = wet / 2;
+  let dry = wet / 2; // mokre → suche
 
-  // ⚖️ WAGA (1 = 0.1kg)
+  // ⚖️ WAGA (1 jednostka = 0.1 kg)
   let wetWeight = wet * 0.1;
   let dryWeight = dry * 0.1;
 
-  // 🚗 SURFER (30kg)
-  let capacity = 30;
+  // 🚗 AUTA
+const vehicles = [
+  { name: "Surfer", capacity: 30 },
+  { name: "Moonbeam", capacity: 35 },
+  { name: "Lost Slamvan", capacity: 35 },
+  { name: "Guardian", capacity: 45 },
+  { name: "Sandking", capacity: 45 },
+  { name: "Volatus", capacity: 90 }
+];
 
-  let tripsWet = Math.ceil(wetWeight / capacity);
-  let tripsDry = Math.ceil(dryWeight / capacity);
+  // Oblicz kursy dla każdego auta
+  let transportHtml = "";
+  vehicles.forEach(v => {
+    const tripsWet = Math.ceil(wetWeight / v.capacity);
+    const tripsDry = Math.ceil(dryWeight / v.capacity);
+    transportHtml += `
+      <b>${v.name} (${v.capacity} kg)</b><br>
+      Mokre: ${wetWeight.toFixed(2)} kg → <b>${tripsWet}</b> kursów<br>
+      Suche: ${dryWeight.toFixed(2)} kg → <b>${tripsDry}</b> kursów<br><br>
+    `;
+  });
 
+  // Wyświetlenie wyników
   resultDiv.innerHTML = `
     🌱 <b>${amount}</b> sadzonek<br><br>
 
@@ -107,12 +121,7 @@ function calculate() {
 
     <hr style="opacity:0.2">
 
-    🚗 Transport (Surfer 30kg):<br><br>
-
-    🌿 Mokre:<br>
-    ${wetWeight.toFixed(2)} kg → <b>${tripsWet}</b> kursów<br><br>
-
-    🌾 Suche:<br>
-    ${dryWeight.toFixed(2)} kg → <b>${tripsDry}</b> kursów
+    🚗 Transport:<br><br>
+    ${transportHtml}
   `;
 }
